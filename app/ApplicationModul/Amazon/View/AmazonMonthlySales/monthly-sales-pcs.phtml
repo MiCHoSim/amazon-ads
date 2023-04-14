@@ -12,35 +12,19 @@ use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
     <?php require('menu.phtml') ?>
 
     <section class="mx-2">
-        <h2 class="text-center text-monospace">Amazon monthly sales - monthly sales table</h2>
+        <h2 class="text-center text-monospace">Amazon monthly sales unit sold - monthly sales table</h2>
 
         <div class="d-flex sticky-top bg-white" style="height: 90px">
-            <?php if(isset($back)) : ?>
-                <div class="d-flex align-items-end m-2 p-1">
-                    <a class="btn btn-success" href="<?= $back ?>" title="Back">
-                        <i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i>
-                    </a>
+            <div class="d-flex align-items-end m-2 p-1">
+                <div class="btn-group" role="group">
+                    <?php foreach ($menuProfile as $key => $menu) : ?>
+
+                        <a class="btn btn-success <?= $profileCode === $menu ? 'active' : '' ?>"
+                           href="amazon-monthly-sales/monthly-sales-pcs/<?= $menu ?>" title="<?= $key ?>" type="button">
+                            <?= $key ?>
+                        </a>
+                    <?php endforeach; ?>
                 </div>
-            <?php endif; ?>
-            <div class="m-1 ml-2">
-                <form method="post" class="" id="<?= $_formMonths['form_id'] ?>" onchange="clickSubmit('<?= $_formMonths['form_id'] ?>')">
-                    <?= $_formMonths['csrf'] ?>
-                    <div class="row">
-                        <div class="form-group my-1">
-                            <?= $_formMonths['year'] ?>
-                        </div>
-                        <div class="form-group my-1" >
-                            <?= $_formMonths['month'] ?>
-                        </div>
-                    </div>
-
-                    <?= $_formMonths['dates-button'] ?>
-
-                </form>
-
-            </div>
-            <div class="d-flex align-items-end m-2 p-1 ml-5">
-                    <?= $total === 'true' ? '<h4 class="border border-success px-2 py-1 rounded">Total For All In Profile</h4>' : '' ?>
             </div>
         </div>
 

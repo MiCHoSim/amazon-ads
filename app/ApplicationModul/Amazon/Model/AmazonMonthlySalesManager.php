@@ -157,17 +157,17 @@ class AmazonMonthlySalesManager
             $monthlySalesData[$i][AmazonMonthlySalesTable::TACOS] = $monthlySalesData[$i][AmazonMonthlySalesTable::GROSS_REVENUE] == 0 ? 0 :
                 ($monthlySalesData[$i][AmazonMonthlySalesTable::AD_COST] / $monthlySalesData[$i][AmazonMonthlySalesTable::GROSS_REVENUE]) * 100;
 
-            $monthlySalesData[$i][AmazonMonthlySalesTable::AD_SALES] = $monthlySalesData[$i][AmazonMonthlySalesTable::UNIT_SOLD] == 0 ? 0 :
-                ($monthlySalesData[$i][AmazonMonthlySalesTable::UNITS_SOLD_FROM_AD_SALES] / $monthlySalesData[$i][AmazonMonthlySalesTable::UNIT_SOLD]) * 100;
+            $monthlySalesData[$i][AmazonMonthlySalesTable::AD_SALES] = $monthlySalesData[$i][AmazonMonthlySalesTable::UNITS_SOLD] == 0 ? 0 :
+                ($monthlySalesData[$i][AmazonMonthlySalesTable::UNITS_SOLD_FROM_AD_SALES] / $monthlySalesData[$i][AmazonMonthlySalesTable::UNITS_SOLD]) * 100;
 
             $monthlySalesData[$i][AmazonMonthlySalesTable::VAT] =
                 $monthlySalesData[$i][AmazonMonthlySalesTable::GROSS_REVENUE] - ($monthlySalesData[$i][AmazonMonthlySalesTable::GROSS_REVENUE] / 1.2);
 
             $monthlySalesData[$i][AmazonMonthlySalesTable::COGS] =
-                $monthlySalesData[$i][AmazonMonthlySalesTable::UNIT_SOLD] * $productData[AmazonProductDataTable::LANDING_COST];
+                $monthlySalesData[$i][AmazonMonthlySalesTable::UNITS_SOLD] * $productData[AmazonProductDataTable::LANDING_COST];
 
             $monthlySalesData[$i][AmazonMonthlySalesTable::ADJUSTED_NET_PROFIT] =
-                $monthlySalesData[$i][AmazonMonthlySalesTable::GROSS_REVENUE] - (($productData[AmazonProductDataTable::FBA_FEES] * $monthlySalesData[$i][AmazonMonthlySalesTable::UNIT_SOLD]) +
+                $monthlySalesData[$i][AmazonMonthlySalesTable::GROSS_REVENUE] - (($productData[AmazonProductDataTable::FBA_FEES] * $monthlySalesData[$i][AmazonMonthlySalesTable::UNITS_SOLD]) +
                     $monthlySalesData[$i][AmazonMonthlySalesTable::COGS] + $monthlySalesData[$i][AmazonMonthlySalesTable::AD_COST] +
                     $monthlySalesData[$i][AmazonMonthlySalesTable::VAT]);
 

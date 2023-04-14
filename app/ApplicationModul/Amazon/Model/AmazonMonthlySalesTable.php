@@ -9,6 +9,7 @@ use AmazonAdvertisingApi\Table\AmazonAdsSpTargetingTable;
 use AmazonAdvertisingApi\Table\SelectDateTable;
 use AmazonAdvertisingApi\Table\Table;
 use App\AccountModul\Model\UserTable;
+use App\ApplicationModul\Amazon\Controller\AmazonAdsController;
 use App\ApplicationModul\Amazon\Controller\AmazonMonthlySalesController;
 use App\ApplicationModul\AppManagement\Model\AmazonProductDataTable;
 use http\Client\Curl\User;
@@ -42,7 +43,7 @@ class AmazonMonthlySalesTable extends Table
     const ACOS = 'acos'; // Advertised -> acosClicks14d
     const TACOS = 'tacos'; // počita sa
     const ROI = 'roi'; // excel
-    const UNIT_SOLD = 'units_sold'; // excel
+    const UNITS_SOLD = 'units_sold'; // excel
     const ORGANIC_SALES = 'organic_sales'; // pocita sa pri nacitani nacitani z tabulky
     const UNITS_SOLD_FROM_AD_SALES = 'units_sold_from_ad_sales'; // Advertised -> unitsSoldClicks7d
     const AD_SALES = 'ad_sales'; // počita sa
@@ -73,8 +74,8 @@ class AmazonMonthlySalesTable extends Table
             [AmazonProductDataTable::AMAZON_PRODUCT_DATA_TABLE,
                 AmazonProductDataTable::FBA_FEES,AmazonProductDataTable::LANDING_COST,AmazonProductDataTable::BREAK_EVEN],
         self::ACOS,self::TACOS,self::ROI,
-        self::UNIT_SOLD,
-        self::ORGANIC_SALES => ['as', self::UNIT_SOLD . ' - ' . self::UNITS_SOLD_FROM_AD_SALES],
+        self::UNITS_SOLD,
+        self::ORGANIC_SALES => ['as', self::UNITS_SOLD . ' - ' . self::UNITS_SOLD_FROM_AD_SALES],
         self::UNITS_SOLD_FROM_AD_SALES,
         self::AD_SALES,self::REFUNDS,
         self::GROSS_REVENUE,self::EXPENSES,self::AD_COST,self::VAT,self::COGS,self::NET_PROFIT,self::ADJUSTED_NET_PROFIT,
@@ -100,7 +101,7 @@ class AmazonMonthlySalesTable extends Table
         self::ACOS => ['title' => 'ACOS', 'description' => 'ACOS'],
         self::TACOS => ['title' => 'TACOS', 'description' => 'TACOS'],
         self::ROI => ['title' => 'ROI %', 'description' => 'ROI %'],
-        self::UNIT_SOLD => ['title' => 'U.S.', 'description' => 'Unit Sold'],
+        self::UNITS_SOLD => ['title' => 'U.S.', 'description' => 'Units Sold'],
         self::ORGANIC_SALES => ['title' => 'Organic S', 'description' => 'Organic Sales'],
         self::UNITS_SOLD_FROM_AD_SALES => ['title' => 'U.S. Sal.', 'description' => 'Units sold from ad Sales'],
         self::AD_SALES => ['title' => 'A. Sal. %', 'description' => 'AD sales %'],
@@ -119,7 +120,7 @@ class AmazonMonthlySalesTable extends Table
     /**
      * Ropzhodnotaveni ktore su priemer a ktore suČet
      */
-    const SUM_TOTAL = [self::PAGE_VIEWS,self::SESSIONS,self::UNIT_SOLD,self::UNITS_SOLD_FROM_AD_SALES,self::REFUNDS,self::GROSS_REVENUE,
+    const SUM_TOTAL = [self::PAGE_VIEWS,self::SESSIONS,self::UNITS_SOLD,self::UNITS_SOLD_FROM_AD_SALES,self::REFUNDS,self::GROSS_REVENUE,
         self::EXPENSES,self::AD_COST,self::VAT,self::COGS,self::NET_PROFIT,self::ADJUSTED_NET_PROFIT];
     const AVG_TOTAL = [self::UNIT_SESSION,AmazonProductDataTable::FBA_FEES,AmazonProductDataTable::LANDING_COST,AmazonProductDataTable::BREAK_EVEN,
         self::ACOS,self::TACOS,self::ROI,self::AD_SALES,self::MARGIN,self::ADJUSTED_NET];
@@ -132,7 +133,7 @@ class AmazonMonthlySalesTable extends Table
     ];
     const KEYS_XLSX = [
         self::ASIN,self::SKU,self::PAGE_VIEWS,self::SESSIONS,self::UNIT_SESSION,
-        self::ROI,self::UNIT_SOLD,self::REFUNDS,self::GROSS_REVENUE,self::EXPENSES,self::NET_PROFIT,self::MARGIN
+        self::ROI,self::UNITS_SOLD,self::REFUNDS,self::GROSS_REVENUE,self::EXPENSES,self::NET_PROFIT,self::MARGIN
     ];
     const KEYS_CALCULATE = [ // scos ešte upresnyt lebo buď sa pocita alebo ťahá
         self::ACOS,self::TACOS,self::AD_SALES,self::VAT,self::COGS,self::ADJUSTED_NET_PROFIT,self::ADJUSTED_NET
@@ -211,21 +212,11 @@ class AmazonMonthlySalesTable extends Table
         $profilesId = [];
         if ($combine !== false)
         {
-            $groupBy = ' GROUP BY ' . $this->table .'.sku ';
+            $groupBy = ' GROUP BY ' . $this->table . '.' . self::SKU;
+
             $amazonAdsProfileTable = new AmazonAdsProfileTable();
-
             $profilesId = $amazonAdsProfileTable->getByCountry($combine);
-
-
-            $whereKeysCombine = ' AND (';
-            foreach ($profilesId as $key => $profileId)
-            {
-                $whereKeysCombine .= $this->table . '.' . AmazonAdsProfileTable::PROFILE_ID . ' = ? ';
-
-                if ($key !== array_key_last($profilesId))
-                    $whereKeysCombine .= ' OR ';
-            }
-            $whereKeysCombine .= ')';
+            $whereKeysCombine = $amazonAdsProfileTable->createWhere($profilesId);
         }
         else
         {
@@ -236,6 +227,7 @@ class AmazonMonthlySalesTable extends Table
         $keys = [];
         $keysTotals = [];
         $joinQuery = '';
+
         foreach (self::VIEW_KEYS as $k => $tableKey)
         {
             if(is_array($tableKey))
@@ -321,6 +313,67 @@ class AmazonMonthlySalesTable extends Table
         $allTotalData = Db::queryOneRow($selectQueryTotals . $fromQuery . $joinQuery . $whereQueryTotal , $whereValuesTotal);
 
         return ['tableHeader'=> array_keys(self::DICTIONARY), 'monthData' => $monthData, 'allTotalData' => $allTotalData];
+    }
+
+    public function getMonthlyPcsSales(string $profileCode, string $groupBy) //: array
+    {
+        //vytvorenie whereQuery
+        $selectQuery = 'SELECT ' . AmazonAdsPortfolioTable::NAME . ', SUM(' . self::UNITS_SOLD . ') as ' . self::UNITS_SOLD;
+        $selectQueryTotals = 'SELECT SUM(' . self::UNITS_SOLD . ') as ' . self::UNITS_SOLD;
+
+        //vytvorenie fromQuery
+        $fromQuery = ' FROM ' . $this->table;
+
+        //vytvorenie joinQuery
+        $joinQuery = ' JOIN ' . AmazonAdsPortfolioTable::AMAZON_ADS_PORTFOLIO_TABLE . ' USING (' . self::PORTFOLIO_ID . ')
+                       JOIN ' . AmazonAdsProfileTable::AMAZON_ADS_PROFILE_TABLE . ' ON ' . $this->table . '.' . self::PROFILE_ID . ' = ' . AmazonAdsProfileTable::AMAZON_ADS_PROFILE_TABLE . '.' . self::PROFILE_ID . '
+                       JOIN ' . SelectDateTable::SELECT_DATE_TABLE . ' USING (' . self::SELECT_DATE_ID . ')';
+
+        //vytvorenie whereQuery
+        $whereKeys = [$this->table . '.' . AmazonAdsProfileTable::USER_ID];
+        $whereValues = [UserTable::$user[UserTable::USER_ID]];
+        $combine = array_search($profileCode, AmazonAdsProfileTable::COMBINE_PROFILE);
+        $amazonAdsProfileTable = new AmazonAdsProfileTable();
+        $profilesId = $amazonAdsProfileTable->getByCountry($combine);
+        $whereKeysCombine = $amazonAdsProfileTable->createWhere($profilesId);
+        $whereQuery = ' WHERE ' . implode(' = ? AND ',$whereKeys) . ' = ?' . $whereKeysCombine;
+        $whereValues = array_merge($whereValues, $profilesId);
+
+        //vytvorenie groupByQuery
+        $groupByQuery = ' GROUP BY ' . $this->table . '.' . $groupBy;
+
+
+
+        // prejdenie vŠetkých mesiacov
+        $dates = $this->getDateOfUser($this->userId);
+        foreach ($dates as $key => $date)
+        {
+            $whereQueryWithDate = $whereQuery . ' AND ' . SelectDateTable::SELECT_START_DATE . ' = ? ';
+
+            //print_r($selectQuery . $fromQuery . $joinQuery . $whereQueryWithDate . $groupByQuery); die;
+
+            $monthData[$key]['allData'] = Db::queryAllRows($selectQuery . $fromQuery . $joinQuery . $whereQueryWithDate . $groupByQuery, array_merge($whereValues, [$date]));
+            $monthData[$key]['totalData'] = Db::queryOneRow($selectQueryTotals . $fromQuery . $joinQuery . $whereQueryWithDate, array_merge($whereValues, [$date]));
+        }
+        AmazonAdsController::view($monthData);
+    }
+
+    /**
+
+     * @return array|false
+     */
+    /**
+     ** Načíta monthly sales Dátumov daného uživateľa
+     * @param string $userId Id uživateľa
+     * @return array|false
+     */
+    private function getDateOfUser(string $userId)
+    {
+        $dates = Db::queryAllRows('SELECT ' . SelectDateTable::SELECT_START_DATE . '
+                                FROM ' . $this->table . '
+                                JOIN ' . SelectDateTable::SELECT_DATE_TABLE . ' USING (' . self::SELECT_DATE_ID . ') 
+                                WHERE ' . self::USER_ID . ' = ? GROUP BY ' . self::SELECT_DATE_ID, [$userId]);
+        return $dates ? array_column($dates, SelectDateTable::SELECT_START_DATE) : false;
     }
 
 

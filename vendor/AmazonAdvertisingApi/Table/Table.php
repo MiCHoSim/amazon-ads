@@ -37,6 +37,7 @@ abstract class Table
      */
     public function __construct(bool|string $id = false)
     {
+        $this->userId = UserTable::$user[UserTable::USER_ID];
         if ($id)
         {
             $data =  Db::queryOneRow('SELECT * FROM '. $this->table . ' 

@@ -3,6 +3,7 @@
 namespace App\ApplicationModul\Amazon\Controller;
 
 use AmazonAdvertisingApi\Connection\Connection;
+use AmazonAdvertisingApi\DataCollection\Profile;
 use AmazonAdvertisingApi\Table\AmazonAdsPortfolioTable;
 use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
 use App\AccountModul\Model\UserTable;
@@ -218,7 +219,6 @@ class AmazonMonthlySalesController extends Controller
         $this->redirect('amazon-monthly-sales/download');
     }
 
-
     /**
      * @param string $profileId Id profilu
      * @param string $monthNumbers Cislo mesiaca v roku
@@ -278,9 +278,6 @@ class AmazonMonthlySalesController extends Controller
     }
 
 
-
-,
-
     /**
      * @param $profileId
      * @param $year
@@ -291,8 +288,16 @@ class AmazonMonthlySalesController extends Controller
      * @throws \ErrorException
      * @Action
      */
-    public function monthlySalesPcs($profileId = null, $year = null, $monthNumbers = 'all', $total = 'false', $product = null)
+    public function monthlySalesPcs($profileCode = null)
     {
+        if (empty($profileCode))
+            $this->redirect('amazon-monthly-sales/monthly-sales-pcs/' . AmazonAdsProfileTable::COMBINE_PROFILE[array_key_first(AmazonAdsProfileTable::COMBINE_PROFILE)]);
+
+        $amazonMonthlySalesTable = new AmazonMonthlySalesTable();
+
+        $this->data['monthlySalesPcsProduct'] = $amazonMonthlySalesTable->getMonthlyPcsSales($profileCode, AmazonMonthlySalesTable::SKU);
+
+
 
         /*
         //$this->amazonManager->basicTemplateSetings($profileId, true);
@@ -339,9 +344,11 @@ class AmazonMonthlySalesController extends Controller
         $this->data['monthlySalesData'] = $amazonMonthlySalesTable->getMonthlySales($this->connection->profileId, $monthNumbers, $total, $product);
         $this->data['total'] = $total;
         $this->data['combine'] = array_search($profileId, AmazonAdsProfileTable::COMBINE_PROFILE);
+
 */
 
-
+        $this->data['profileCode'] = $profileCode;
+        $this->data['menuProfile'] = AmazonAdsProfileTable::COMBINE_PROFILE;
         $this->data['method'] = 'monthly-sales-pcs';
         $this->view = 'monthly-sales-pcs';
     }

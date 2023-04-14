@@ -97,7 +97,7 @@ class AmazonAdsProfileTable extends Table
 
     // požiadavky ktoré che zákaznik kombinovať
     const COMBINE_PROFILE = ['UK' => 'uk','EU' => 'eu', 'UK+EU' => 'uk+eu'];
-    const FULL_COMBINE_PROFILE = ['UK' => 'UK', 'EU' => ['DE','FR','ES','IT','NL','SE','PL'], 'UK+EU' => ['UK','DE','FR','ES','IT','NL','SE','PL']];
+    const FULL_COMBINE_PROFILE = ['UK' => ['UK'], 'EU' => ['DE','FR','ES','IT','NL','SE','PL'], 'UK+EU' => ['UK','DE','FR','ES','IT','NL','SE','PL']];
     const CUSTOM_SORT = ['UK','DE','FR','ES','IT','NL','SE','PL'];
 
     /**
@@ -149,5 +149,24 @@ class AmazonAdsProfileTable extends Table
                             FROM ' . self::AMAZON_ADS_PROFILE_TABLE . $whereQuery, self::FULL_COMBINE_PROFILE[$countryCodes]);
 
         return $profilesId ? array_column($profilesId, self::PROFILE_ID) : false;
+    }
+
+    /**
+     ** Vytvori whereQuery pre vyber viacerých profilov podlľa Profile_id
+     * @param array $profilesId
+     * @return string
+     */
+    public function createWhere(array $profilesId) : string
+    {
+        $whereKeysCombine = ' AND (';
+        foreach ($profilesId as $key => $profileId)
+        {
+            $whereKeysCombine .= $this->table . '.' . self::PROFILE_ID . ' = ? ';
+
+            if ($key !== array_key_last($profilesId))
+                $whereKeysCombine .= ' OR ';
+        }
+        $whereKeysCombine .= ')';
+        return $whereKeysCombine;
     }
 }
