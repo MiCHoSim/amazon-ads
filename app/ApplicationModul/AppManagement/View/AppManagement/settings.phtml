@@ -1,0 +1,181 @@
+<?php
+use App\AccountModul\Model\UserTable;
+use App\ApplicationModul\AppManagement\Model\AmazonAdsConfigTable;
+use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
+use AmazonAdvertisingApi\Table\AmazonAdsPortfolioTable;
+use AmazonAdvertisingApi\Table\AmazonAdsCampaignTable;
+use AmazonAdvertisingApi\Table\AmazonAdsAdGroupTable;
+use AmazonAdvertisingApi\Table\AmazonAdsKeywordTable;
+
+?>
+<article class="mx-1">
+
+    <?php isset($profileMenu) ? require($profileMenu) : '' ?>
+    <?php require('menu.phtml') ?>
+
+            <h2 class="text-center text-monospace">Amazon Advertising - statistics</h2>
+
+    <section class="container">
+
+        <?php if (isset($_formUsers)) : ?>
+            <div class="d-flex justify-content-center text-center">
+                <form method="post" id="<?= $_formUsers['form_id'] ?>" onchange="clickSubmit('<?= $_formUsers['form_id'] ?>')">
+                    <?= $_formUsers['csrf'] ?>
+                    <div class="form-group">
+                        <?= $_formUsers[UserTable::USER_ID] ?>
+                    </div>
+                    <?= $_formUsers['users-button'] ?>
+                </form>
+            </div>
+        <?php endif; ?>
+
+        <div class="text-center">
+            <form class="" method="post" id="<?= $_formSet['form_id'] ?>">
+                <?= $_formSet['csrf'] ?>
+                <?= $_formSet[AmazonAdsConfigTable::AMAZON_ADS_CONFIG_ID] ?>
+                <?= $_formSet[AmazonAdsConfigTable::USER_ID] ?>
+                <div class="d-flex justify-content-center">
+                    <div class="form-group form-inline">
+                        <?= $_formSet[AmazonAdsConfigTable::AMAZON_ADS_REGION_ID] ?>
+                    </div>
+                </div>
+                <div class="form-group d-flex text-nowrap align-items-end">
+                    <?= $_formSet[AmazonAdsConfigTable::CLIENT_ID] ?>
+                </div>
+                <div class="form-group d-flex text-nowrap align-items-end">
+                    <?= $_formSet[AmazonAdsConfigTable::CLIENT_SECRET] ?>
+                </div>
+                <?= $_formSet['save-button'] ?>
+            </form>
+        </div>
+
+        <hr>
+
+        <?php if (!empty($refreshUrl)): ?>
+            <a class="btn btn-danger btn-block my-2 text-decoration-none text-warning font-weight-bold text-monospace" href="<?= $refreshUrl ?>">Get a Refresh Token</a>
+        <?php elseif (!empty($refreshToken)): ?>
+            <div class="form-group d-flex text-nowrap align-items-end">
+                <label class="font-weight-bold mx-2">Refresh Token </label>
+                <span class="form-control"><?= FormatHelper::shorten($refreshToken, 109) ?></span>
+            </div>
+
+            <hr>
+
+            <?php if (empty($profiles)): ?>
+                <a class="btn btn-danger btn-block my-2 text-decoration-none text-warning font-weight-bold text-monospace letter-spacing-5" href="app-management/download-list-profiles/<?= $selectUser ?>">Get a list of Profiles</a>
+            <?php else: ?>
+                <div class="row justify-content-center">
+                    <a href="#profiles" aria-controls="profiles" class="text-decoration-none" data-toggle="collapse" aria-expanded="false">
+                        <h5 class="mr-1"><?= count($profiles) ?> List of Profiles</h5>
+                    </a>
+                    <a href="app-management/download-list-profiles/<?= $selectUser ?>"><span class="badge badge-success">Update a list of Profiles</span></a>
+                </div>
+                <div id="profiles" class="text-center collapse">
+                    <?php foreach ($profiles as $profile) : ?>
+                        <a class="btn btn-outline-info mb-1" href="amazon-ads/download/<?= $profile[AmazonAdsProfileTable::PROFILE_ID] ?>"><?= $profile['country'] ?></a>
+                    <?php endforeach; ?>
+                </div>
+
+                <hr>
+
+                <?php if (empty($portfolios)): ?>
+                    <a class="btn btn-danger btn-block my-2 text-decoration-none text-warning font-weight-bold text-monospace letter-spacing-5" href="app-management/download-list-portfolios/<?= $selectUser ?>">Get a list of Portfolios</a>
+                <?php else: ?>
+                    <div class="row justify-content-center">
+                        <a href="#portfolios" aria-controls="portfolios" class="text-decoration-none" data-toggle="collapse" aria-expanded="false">
+                            <h5 class="mr-1"><?= count($portfolios) ?> List of Portfolios</h5>
+                        </a>
+                        <a href="app-management/download-list-portfolios/<?= $selectUser ?>"><span class="badge badge-success">Update a list of Portfolios</span></a>
+                    </div>
+                    <div id="portfolios" class="text-center collapse">
+                        <?php foreach ($portfolios as $portfolio) : ?>
+                            <a class="btn btn-sm btn-outline-info mb-1" href="x"><?= $portfolio[AmazonAdsPortfolioTable::NAME] ?></a>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <hr>
+
+                    <?php if (empty($campaigns)): ?>
+                        <a class="btn btn-danger btn-block my-2 text-decoration-none text-warning font-weight-bold text-monospace letter-spacing-5" href="app-management/download-list-campaigns/<?= $selectUser ?>">Get a list of Campaigns</a>
+                    <?php else: ?>
+                        <div class="row justify-content-center">
+                            <a href="#campaigns" aria-controls="campaigns" class="text-decoration-none" data-toggle="collapse" aria-expanded="false">
+                                <h5 class="mr-1"><?= count($campaigns) ?> List of Campaigns</h5>
+                            </a>
+                            <a href="app-management/download-list-campaigns/<?= $selectUser ?>"><span class="badge badge-success">Update a list of Campaigns</span></a>
+                        </div>
+                        <div id="campaigns" class="text-center collapse">
+                            <?php foreach ($campaigns as $campaign) : ?>
+                                <a class="btn btn-sm btn-outline-info mb-1" href="x"><?= $campaign[AmazonAdsCampaignTable::NAME] ?></a>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <hr>
+
+                        <?php if (empty($adGroups)): ?>
+                            <a class="btn btn-danger btn-block my-2 text-decoration-none text-warning font-weight-bold text-monospace letter-spacing-5" href="app-management/download-list-ad-groups/<?= $selectUser ?>">Get a list of Ad Groups</a>
+                        <?php else: ?>
+                            <div class="row justify-content-center">
+                                <a href="#adgroups" aria-controls="adgroups" class="text-decoration-none" data-toggle="collapse" aria-expanded="false">
+                                    <h5 class="mr-1"><?= count($adGroups) ?> List of Ad Groups</h5>
+                                </a>
+                                <a href="app-management/download-list-ad-groups/<?= $selectUser ?>"><span class="badge badge-success">Update a list of Ad Groups</span></a>
+                            </div>
+                            <div id="adgroups" class="text-center collapse">
+                                <?php foreach ($adGroups as $adGroup) : ?>
+                                    <a class="btn btn-sm btn-outline-info mb-1" href="x"><?= $adGroup[AmazonAdsAdGroupTable::NAME] ?></a>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <hr>
+
+                            <?php if (empty($keywords)): ?>
+                                <a class="btn btn-danger btn-block my-2 text-decoration-none text-warning font-weight-bold text-monospace letter-spacing-5" href="app-management/download-list-keywords/<?= $selectUser ?>">Get a list of Keywords</a>
+                            <?php else: ?>
+                                <div class="row justify-content-center">
+                                    <a href="#keywords" aria-controls="keywords" class="text-decoration-none" data-toggle="collapse" aria-expanded="false">
+                                        <h5 class="mr-1"><?= count($keywords) ?> List of Keywords</h5>
+                                    </a>
+                                    <a href="app-management/download-list-keywords/<?= $selectUser ?>"><span class="badge badge-success">Update a list of Keywords</span></a>
+                                </div>
+                                <div id="keywords" class="text-center collapse">
+                                    <?php foreach ($keywords as $keyword) : ?>
+                                        <a class="btn btn-sm btn-outline-info mb-1" href="x"><?= $keyword[AmazonAdsKeywordTable::KEYWORD_TEXT] ?></a>
+                                    <?php endforeach; ?>
+                                </div>
+
+                            <?php endif; ?>
+
+                            <hr>
+
+                            <?php if (empty($targets)): ?>
+                                <a class="btn btn-danger btn-block my-2 text-decoration-none text-warning font-weight-bold text-monospace letter-spacing-5" href="app-management/download-list-targetings/<?= $selectUser ?>">Get a list of Targetings</a>
+                            <?php else: ?>
+                                <div class="row justify-content-center">
+                                    <a href="#targetings" aria-controls="targetings" class="text-decoration-none" data-toggle="collapse" aria-expanded="false">
+                                        <h5 class="mr-1"><?= count($targets) ?> List of Targetings</h5>
+                                    </a>
+                                    <a href="app-management/download-list-targetings/<?= $selectUser ?>"><span class="badge badge-success">Update a list of Targeting</span></a>
+                                </div>
+                                <div id="targetings" class="text-center collapse">
+                                    <?php foreach ($targets as $target) : ?>
+                                        <a class="btn btn-sm btn-outline-info mb-1" href="x"><?= $target['name'] ?></a>
+                                    <?php endforeach; ?>
+                                </div>
+
+                                <hr>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+
+    </section>
+    <hr class="mb-0 mt-2">
+    <footer class="text-center text-monospace bg-warning p-0">
+        <strong><?= $settingStatus ?> ! ! ! </strong>
+    </footer>
+    <hr class="my-0">
+</article>
+<script src="js/clickSubmit.js"></script>

@@ -1,0 +1,42 @@
+<?php
+?>
+
+<article class="mx-1">
+
+    <?php isset($profileMenu) ? require($profileMenu) : '' ?>
+
+
+
+    <div class="row no-gutters flex-nowrap ">
+        <div class="col-auto p-0 border">
+            <ul class="nav flex-column sticky-top rounded-0">
+
+                <a class="btn-sm btn-secondary" href="account/personal-information" title="Back">
+                        <i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i>
+                </a>
+
+                <li class="nav-item p-0 m-1 btn-sm btn-light rounded-0 <?= $subview === 'settings'? 'active' : '' ?>">
+                    <a class="nav-link px-5 py-3 mx-0  font-weight-bold text-dark" href="app-management/settings">Settings</a>
+                </li>
+                <li class="nav-item p-0 m-1 btn-sm btn-light rounded-0 <?= $subview === 'products-data'? 'active' : '' ?>">
+                    <a class="nav-link px-5 py-3 mx-0  font-weight-bold text-dark" href="app-management/products-data">Add new products data</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col">
+
+            <?php require($subview . '.phtml')  ?>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+
+    </footer>
+
+
+
+</article>
+

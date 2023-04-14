@@ -1,0 +1,26 @@
+<?php
+use AmazonAdvertisingApi\Report\DataRaw;
+?>
+
+<article class="mx-1">
+
+    <?php isset($profileMenu) ? require($profileMenu) : '' ?>
+    <?php require('menu.phtml') ?>
+
+    <section class="mx-2">
+        <h2 class="text-center text-monospace">Add new/update products data</h2>
+        <?php if (isset($_form)) : ?>
+            <form class="" method="post" id="<?= $_form['form_id'] ?>" enctype="multipart/form-data">
+                <?= $_form['csrf'] ?>
+                <div class="form-inline justify-content-center">
+                    <div class="custom-file w-auto"> <?= $_form['products-data'] ?></div>
+                    <span class="m-1"><?= $_form['upload-button'] ?></span>
+                </div>
+            </form>
+
+        <?php else: ?>
+        <?php endif; ?>
+    </section>
+    <footer>
+    </footer>
+</article>

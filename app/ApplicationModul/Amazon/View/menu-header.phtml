@@ -1,0 +1,18 @@
+<?php
+use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
+?>
+
+<header class="mt-1 sticky-top" style="z-index: 1025">
+    <div class="row justify-content-end no-gutters">
+        <form method="post" id="<?= $_formStates['form_id'] ?>" onchange="clickSubmit('<?= $_formStates['form_id'] ?>')">
+            <?= $_formStates['csrf'] ?>
+            <div class="form-group my-1">
+                <?= $_formStates[AmazonAdsProfileTable::PROFILE_ID] ?>
+            </div>
+            <?= $_formStates['display-button'] ?>
+        </form>
+    </div>
+</header>
+<hr class="my-1">
+
+<script src="js/clickSubmit.js"></script>

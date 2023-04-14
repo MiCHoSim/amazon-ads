@@ -1,0 +1,171 @@
+<?php
+use App\AccountModul\Model\UserTable;
+?>
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+    <title><?= $title ?></title>
+    <base href="<?= Settings::$http ?>://<?= $domain ?>"/>
+
+    <meta charset="UTF-8"/>
+    <meta name="description" content="<?= $description ?>"/>
+    <meta name="author" content="<?= $author ?>" />
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="<?= $domainName ?>">
+    <meta name="application-name" content="<?= $domainName ?>">
+
+
+
+    <link rel="stylesheet" href="css/stylenew3.css" type="text/css"/><!-- Moje štýly CSS -->
+
+    <link rel="stylesheet" href="css/fontawesome.min.css" ><!-- Font Awesome -->
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="js/jquery.min.js"></script><!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+    <!-- Select -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
+
+    <script src="js/bootstrap.min.js"></script><!-- Bootstrap Core JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="js/stay_standalone.min.js"></script>
+
+    <!-- Oprava konfliktu medzi jQuery UI a Bootstrap -->
+    <script>$.fn.bootstrapBtn = $.fn.button.noConflict();</script>
+    <!--
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    -->
+</head>
+<?php use App\ClanokModul\Model\ArticleManazer; ?>
+<body>
+    <!-- Hlavička -->
+    <header class="bg-light">
+
+        <nav class="navbar navbar-expand-sm navbar-light container">
+
+            <a class="navbar-brand  d-flex" href="<?= $user ? 'account/application' : '' ?>">
+                <hgroup class="font-italic">
+                    <img class="d-inline-block align-top mr-0 mr-sm-5" id="logo" src="obrazky/logo/logo_male.png" alt="<?= Settings::$domainName ?>">
+                    <h4 class="text-right text-success  text-monospace letter-spacing-5"><?= Settings::$slogan?></h4>
+                </hgroup>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigacna-lista" aria-controls="navigacna-lista" aria-expanded="false" aria-label="Rozbaliť navigáciu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navigacna-lista">
+                <!-- Menu -->
+                <ul class="ml-auto nav flex-nowrap text-nowrap justify-content-end">
+                    <li class="nav-item px-md-1" title="About us">
+                        <a class="nav-link odkaz-dark" href="article/info/about-us">About us</a>
+                    </li>
+                    <li class="nav-item px-md-1" title="Contact">
+                        <a class="nav-link odkaz-dark" href="contact">Contact</a>
+                    </li>
+                    <?php if ($user) : ?>
+                        <li class="pl-md-3" title="Account">
+                            <a class="btn btn-success" href="<?= $user[UserTable::ADMIN] ? 'account/personal-information' : 'account/application' ?>">Account</a>
+                        </li>
+                    <?php endif; ?>
+                    <!--
+                    <li class="pl-md-3" title="Account">
+                        <a class="btn btn-success" href="<?= $user ? $user[UserTable::ADMIN] ? 'account/personal-information' : 'account/application' : 'account/login' ?>">Login</a>
+                    </li>
+                    -->
+                </ul>
+            </div>
+
+        </nav>
+
+    </header>
+
+    <!-- Telo -->
+    <section class="position-sticky" >
+
+        <!-- Správy -->
+        <?php foreach ($_messages as $message) : ?>
+            <div class="message-<?=  $message['type'] ?>">
+                <div class="container fixed-top position-sticky opacity-90 text-white font-weight-bolder alert alert-dismissible fade show " role="alert">
+                    <?= ControlHelper::controlIcon($message['type'])?>
+                    <?= $message['contents'] ?>
+                    <?= ControlHelper::cancel('alert') ?>
+                </div>
+            </div>
+        <?php endforeach ?>
+
+
+        <!--Info Cookies -->
+        <div class="fixed-top position-sticky bg-cookies">
+            <?php //$cookiesKontroler->vypisPohlad(); ?>
+        </div>
+
+        <!-- Info stránky -->
+        <div class="fixed-top position-sticky info-okno">
+            <?php //$uvodInfoKontroler->vypisPohlad(); ?>
+        </div>
+
+        <?php //if($prihlaseny) : ?>
+        <!-- Upozornenia stránky -->
+        <div class="fixed-top position-sticky info-okno bg-transparent d-flex justify-content-center mx-3">
+            <?php //$prepadnutiePermanentka->vypisPohlad(); ?>
+        </div>
+        <?php //endif; ?>
+
+        <!-- Podstránky -->
+        <?php $subpageController->writeView(); ?>
+
+    </section>
+
+
+
+
+
+
+    <!-- Petička -->
+    <footer class="bg-light">
+
+        <!-- Spodné menu -->
+        <nav class="d-flex justify-content-center pt-3">
+            <ul class="nav">
+                <li class="nav-item border-right" title=""><a class="nav-link odkaz-dark" href="article/info/about-us">About us</a></li>
+                <li class="nav-item" title=""><a class="nav-link odkaz-dark" href="contact">Contact<?php // $informacia[ClanokManazer::TITULOK] ?></a></li>
+                <!--
+                <li class="nav-item" title=""><a class="nav-link odkaz-dark" href="cookies/<?php // $informacia[ClanokManazer::URL] ?>">Cookies<?php // $informacia[ClanokManazer::TITULOK] ?></a></li>
+                -->
+            </ul>
+        </nav>
+
+        <hr class="">
+
+        <address class="text-center text-monospace p-2">
+            <div>
+                <span>
+                    Copyright © 2022<a href="" class="text-decoration-none text-dark">|<?= Settings::$domainName ?>|</a>
+                </span>
+            </div>
+            <div class="small text-muted pt-2">
+                <span>
+                    Created #<?= Settings::$authorWebu ?># <?= Settings::$authorEmail ?>|<?= Settings::$authorTel ?>
+                    for <?= Settings::$domainName ?>
+                </span>
+            </div>
+        </address>
+
+    </footer>
+
+</body>
+</html>

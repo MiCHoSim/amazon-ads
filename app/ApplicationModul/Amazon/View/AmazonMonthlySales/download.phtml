@@ -1,0 +1,35 @@
+<?php
+use AmazonAdvertisingApi\Report\DataRaw;
+?>
+<article class="mx-1">
+
+    <?php isset($profileMenu) ? require($profileMenu) : '' ?>
+    <?php require('menu.phtml') ?>
+
+    <section class="mx-2">
+
+        <h2 class="text-center text-monospace">Amazon monthly sales - download</h2>
+
+        <?php if (isset($_form)) : ?>
+            <form class="" method="post" id="<?= $_form['form_id'] ?>" enctype="multipart/form-data">
+                <?= $_form['csrf'] ?>
+                <div class="form-inline justify-content-center">
+                    <div class="custom-file w-auto"> <?= $_form['month-data'] ?></div>
+                    <span class="m-1"><?= $_form['upload-button'] ?></span>
+                </div>
+            </form>
+
+        <?php else: ?>
+
+            <div class="text-center">
+                <a class="btn btn-success text-white m-1 <?= $disabledCheck ? 'disabled' : '' ?>" <?= $disabledCheck ? '' : 'href="' . $currentUrl . '"' ?>>Check data</a>
+                <a class="btn btn-success text-white m-1 <?= $disabledDownload ? 'disabled' : '' ?>" <?= $disabledDownload ? '' : 'href="amazon-monthly-sales/download-reports/' . $reportsIdUrl . '"' ?>>Download and Create monthly sales</a>
+                <a class="btn btn-sm btn-outline-info mt-auto mb-1 small py-0" href="amazon-monthly-sales/download">Restart downloading</a>
+            </div>
+
+        <?php endif; ?>
+    </section>
+    <footer>
+    </footer>
+    </div>
+</article>

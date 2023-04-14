@@ -1,0 +1,8 @@
+
+<div class="btn-group">
+    <a class="btn btn-secondary" href="account/application" title="Back">
+        <i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i>
+    </a>
+    <a class="font-weight-bold text-dark btn btn-light <?= $method === 'download'? 'active' : '' ?>" href="amazon-monthly-sales/download">New monthly sales</a>
+    <a class="font-weight-bold text-dark btn btn-light <?= $method === 'monthly-sales'? 'active' : '' ?>" href="amazon-monthly-sales/monthly-sales<?= isset($profile) ? '/' . $profile : '' ?>">Monthly sales</a>
+</div>

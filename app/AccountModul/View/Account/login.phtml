@@ -1,0 +1,33 @@
+<?php
+use Micho\Form\Form;
+?>
+
+<section class="">
+
+    <form method="post" id="<?= $_form['form_id'] ?>">
+        <?= $_form['csrf'] ?>
+
+        <div class="form-group">
+            <?= $_form[Form::EMAIL] ?>
+        </div>
+        <div class="form-group">
+            <?= $_form[Form::PASSWORD] ?>
+        </div>
+        <?= $_form['login-button'] ?>
+    </form>
+
+</section>
+<hr class="my-1">
+<footer>
+    <small class="d-flex justify-content-between">
+        <a title="Contact the administrator">Create a new account</a>
+        <br>
+        <!--
+        <a href="account/new-account">Create a new account</a><br>
+        -->
+        <a href="account/forgot-password">Forgot password</a>
+    </small>
+
+</footer>
+
+

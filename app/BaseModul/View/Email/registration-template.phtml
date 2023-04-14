@@ -1,0 +1,20 @@
+<?php use App\AccountModul\Model\UserTable;
+       ?>
+
+<h4>Registration at<a href="https://<?= $domain ?>"><?= $domainName ?></a></h4>
+<div class="center">
+    <p>Thank you for registering on our website. <br> Your data:</p>
+    <table>
+        <tr>
+            <th>Login email:</th>
+            <td><?= $userData[UserTable::EMAIL] ?></td>
+        </tr>
+        <tr>
+            <th>Login password:</th>
+            <td><?= $userData[UserTable::PASSWORD] ?></td>
+        </tr>
+    </table>
+    <br>
+    <p>You can change the data to<a target="_blank" href="https://<?= $domain ?>/administracia/osobne-udaje"> this address.</a></p>
+
+</div>

@@ -1,0 +1,17 @@
+
+<?php use App\ArticleModul\Model\ArticleManager; ?>
+
+<article class="jumbotron bg-transparent">
+    <header class="py-4 text-center">
+        <h1 class="display-3 container"><?= $_article[ArticleManager::TITLE] ?></h1>
+    </header>
+    <section class="container mt-5">
+        <p>
+            <?= $_article[ArticleManager::CONTENTS] ?>
+        </p>
+    </section>
+    <footer>
+
+    </footer>
+
+</article>

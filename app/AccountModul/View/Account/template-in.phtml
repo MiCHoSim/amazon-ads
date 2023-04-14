@@ -1,0 +1,46 @@
+<?php
+use App\AccountModul\Model\UserTable;
+?>
+
+<nav class="navbar d-flex justify-content-center small">
+    <!-- Menu -->
+    <ul class="nav text-nowrap justify-content-center">
+
+        <li class="nav-item " title="App management">
+                <a class="btn btn-sm btn-outline-success m-1" href="app-management/settings">App management</a>
+        </li>
+
+        <li class="nav-item " title="App">
+            <a class="btn btn-sm btn-outline-success m-1" href="account/application">Applications</a>
+        </li>
+        <li class="nav-item " title="Personal information">
+            <a class="nav-link odkaz-dark" href="account/personal-information">Personal information</a>
+        </li>
+        <li class="nav-item" title="Password change">
+            <a class="nav-link odkaz-dark" href="account/password-change">Password change</a>
+        </li>
+        <li class="nav-item" title="Log out">
+            <a class="nav-link odkaz-dark" href="account/log-out">Log out</a>
+        </li>
+    </ul>
+</nav>
+<hr class="m-0">
+
+<article class="container">
+    <header class="">
+        <h3 class=""></h3>
+    </header>
+
+
+    <?php require($subview . '.phtml')  ?>
+
+    <footer>
+
+    </footer>
+
+
+
+</article>
+
+
+

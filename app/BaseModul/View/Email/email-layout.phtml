@@ -1,0 +1,76 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        h4 {
+            text-align: center;
+        }
+        .center {
+            margin: auto;
+            max-width: 24em;
+        }
+        td, th {
+            padding: 0.2rem 1rem;
+        }
+        th {
+            text-align: right;
+        }
+        h5 {
+            margin: 25px 0 0 20px;
+            text-decoration: underline;
+        }
+        h4 {
+            text-align: center;
+        }
+        th {
+            text-align: right;
+        }
+        .text-left {
+            text-align: left;
+        }
+        .left
+        {
+            float: left;
+        }
+        .cleaner
+        {
+            clear: both;
+        }
+        .block {
+            display: inline-block;
+        }
+        .header-table{
+            background: #7a7676;
+        }
+        .contact{
+            border-collapse: collapse;
+        }
+        .contact a {
+            text-decoration: none;
+            color: black;
+        }
+        .message {
+            border: 1px solid black;;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="left">
+
+    <?php require($subview . '.phtml')  ?>
+
+    <p><p>S pozdravom a prianím pekného dňa a príjemného cvičenia</p></p>
+    <h3>A team <a href="https://<?= $domain ?>"><?= $domainName ?></a></h3>
+
+</div>
+<a class="left" href="https://<?= $domain ?>">
+    <h1>
+        <img src="https://<?= $domain ?>/obrazky/logo/logo_stredne.png" alt="<?= $domainName ?>">
+    </h1>
+</a>
+<div class="cleaner"></div>
+
+</body>
+</html>
+

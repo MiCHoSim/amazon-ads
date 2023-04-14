@@ -1,0 +1,24 @@
+
+<?php use App\ArticleModul\Model\ArticleManager; ?>
+
+<article class="jumbotron bg-transparent">
+    <div class="container">
+        <header>
+            <ul class="nav text-center d-flex justify-content-center">
+                <li class="pl-md-3" title="Login">
+                    <a class="btn btn-success" href="<?= $user ? $user[UserTable::ADMIN] ? 'account/personal-information' : 'account/application' : 'account/login' ?>">Login</a>
+                </li>
+            </ul>
+            <!--
+            <h1 class="display-3"><?= $_article[ArticleManager::TITLE] ?></h1>
+            -->
+        </header>
+        <hr>
+        <section>
+            <?= $_article[ArticleManager::CONTENTS] ?>
+        </section>
+        <footer>
+
+        </footer>
+    </div>
+</article>

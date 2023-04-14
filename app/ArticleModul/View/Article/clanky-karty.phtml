@@ -1,0 +1,33 @@
+<?php use App\ClanokModul\Model\ArticleManazer; ?>
+
+<?php if (empty($clanky)): ?>
+
+<h4 class="text-center">Zatiaľ neboli vytvorené žiadne články tejto kategórie.</h4>
+
+<?php else: ?>
+
+    <div class="row no-gutters">
+        <?php foreach ($clanky as $clanok): ?>
+            <div class="col-12 col-sm-6 col-md-4">
+                <div  class="card m-1 karty-clanky">
+                    <a href="clanok/<?= $clanok[ArticleManazer::URL] ?>" class="card-link">
+                        <img class="card-img-top img-fluid" src="<?= $clanok['titulnyObrazok'] ?>" alt="Obrázok <?= $clanok[ArticleManazer::TITLE] ?>">
+                        <div class="card-body ">
+                            <h4 class="card-title"><?= $clanok[ArticleManazer::TITLE] ?></h4>
+                            <p class="card-text"><?= FormatHelper::shorten($clanok[ArticleManazer::DESCRIPTION],100) ?></p>
+                        </div>
+                    </a>
+                    <div class="card-footer border-top border-info">
+                        <small class="text-muted"><?= FormatHelper::peknyDatum($clanok[ArticleManazer::CREATION_DATE]) ?></small>
+                    </div>
+
+                </div>
+            </div>
+
+        <?php endforeach; ?>
+    </div>
+
+<?php endif; ?>
+
+
+

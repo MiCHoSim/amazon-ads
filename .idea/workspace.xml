@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="247653f2-8691-4b80-9ee9-65f84df7180d" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2MpUzFYhXYOu4cIPfp5xaHw0BXi" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/xampp/htdocs/amazon/public/js",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\amazon\public\js" />
+      <recent name="C:\projekty\amazon\app\ApplicationModul\AppManagement\View\AppManagement" />
+      <recent name="C:\projekty\amazon\app\ApplicationModul\Amazon\View\AmazonAds" />
+      <recent name="C:\projekty\amazon\app\ApplicationModul\Amazon\View\AmazonMonthlySales" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\amazon\app\ApplicationModul\Amazon" />
+      <recent name="C:\xampp\htdocs\amazon\public\css" />
+      <recent name="C:\xampp\htdocs\amazon\public\js" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="247653f2-8691-4b80-9ee9-65f84df7180d" name="Changes" comment="" />
+      <created>1678464278572</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1678464278572</updated>
+      <workItem from="1678464280727" duration="1377000" />
+      <workItem from="1678469149014" duration="13867000" />
+      <workItem from="1678487068498" duration="662000" />
+      <workItem from="1678559742340" duration="11355000" />
+      <workItem from="1678608101736" duration="3002000" />
+      <workItem from="1678698261685" duration="74000" />
+      <workItem from="1679073258791" duration="22243000" />
+      <workItem from="1679415326991" duration="2411000" />
+      <workItem from="1681212487716" duration="618000" />
+      <workItem from="1681217811186" duration="70872000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Prepisovačky" />
+    <MESSAGE value="povodne" />
+    <option name="LAST_COMMIT_MESSAGE" value="povodne" />
+  </component>
+</project>

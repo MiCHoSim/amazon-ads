@@ -1,0 +1,36 @@
+<?php
+use AmazonAdvertisingApi\Report\DataRaw;
+?>
+
+<article class="mx-1">
+
+    <?php isset($profileMenu) ? require($profileMenu) : '' ?>
+    <?php require('menu.phtml') ?>
+
+    <section class="mx-2">
+        <h2 class="text-center text-monospace">Amazon Advertising - download</h2>
+
+        <form class="" method="post" id="<?= $_formSelect['form_id'] ?>" disabled="disable">
+            <?= $_formSelect['csrf'] ?>
+            <div class="form-inline justify-content-center">
+
+                <span class="m-1"><?= $_formSelect[DataRaw::START_DATE] ?></span>
+
+                <span class="m-1"><?= $_formSelect[DataRaw::END_DATE] ?></span>
+
+                <span class="m-1"><?= $_formSelect[DataRaw::REPORT_TYPE_ID] ?></span>
+
+                <span class="m-1"><?= $_formSelect[DataRaw::TIME_UNIT] ?></span>
+
+                <span class="m-1"><?= $_formSelect['send-request'] ?></span>
+
+                <a class="btn btn-success text-white m-1 <?= $disabledCheck ? 'disabled' : '' ?>" <?= $disabledCheck ? '' : 'href="' . $currentUrl . '"' ?>>Check data</a>
+                <a class="btn btn-success text-white m-1 <?= $disabledDownload ? 'disabled' : '' ?>" <?= $disabledDownload ? '' : 'href="amazon-ads/download-report/' . $profileId . '/' . $reportId . '"' ?>>Download data</a>
+                <a class="btn btn-sm btn-outline-info mt-auto mb-1 small py-0" href="amazon-ads/download/<?= $profileId ?>">Restart downloading</a>
+            </div>
+        </form>
+    </section>
+    <footer>
+    </footer>
+    </div>
+</article>

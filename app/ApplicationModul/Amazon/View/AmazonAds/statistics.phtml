@@ -1,0 +1,166 @@
+<?php
+use AmazonAdvertisingApi\Table\AmazonAdsPortfolioTable;
+use AmazonAdvertisingApi\Table\AmazonAdsCampaignTable;
+use AmazonAdvertisingApi\Table\AmazonAdsAdGroupTable;
+use AmazonAdvertisingApi\Report\DataRaw;
+use AmazonAdvertisingApi\Report\ReportDictionary;
+use Micho\Utilities\StringUtilities;
+use Micho\Utilities\DateTimeUtilities;
+use AmazonAdvertisingApi\Table\SelectDateTable;
+?>
+
+<article class="mx-1">
+
+    <?php isset($profileMenu) ? require($profileMenu) : '' ?>
+    <?php require('menu.phtml') ?>
+
+    <section class="mx-2">
+
+        <h2 class="text-center text-monospace">Amazon Advertising - statistics</h2>
+
+        <div class="d-flex sticky-top bg-white" style="height: 90px">
+
+            <?php if(isset($back)) : ?>
+                <div class="d-flex align-items-end m-2 p-1">
+                    <a class="btn btn-success" href="<?= $back ?>" title="Back">
+                        <i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i>
+                    </a>
+                </div>
+            <?php endif; ?>
+
+            <?php if(isset($_formPortfolio)) : ?>
+                <div class="m-1">
+                    <form method="post" id="<?= $_formPortfolio['form_id'] ?>" onchange="clickSubmit('<?= $_formPortfolio['form_id'] ?>')">
+                        <?= $_formPortfolio['csrf'] ?>
+                        <div class="form-group my-1">
+                            <?= $_formPortfolio[AmazonAdsPortfolioTable::PORTFOLIO_ID] ?>
+                        </div>
+                        <?= $_formPortfolio['portfolio-button'] ?>
+                    </form>
+                </div>
+            <?php endif; ?>
+
+            <?php if(isset($_formCampaign)) : ?>
+                <div class="m-1">
+                    <form method="post" id="<?= $_formCampaign['form_id'] ?>" onchange="clickSubmit('<?= $_formCampaign['form_id'] ?>')">
+                        <?= $_formCampaign['csrf'] ?>
+                        <div class="form-group my-1">
+                            <?= $_formCampaign[AmazonAdsCampaignTable::CAMPAIGN_ID] ?>
+                        </div>
+                        <?= $_formCampaign['campaign-button'] ?>
+                    </form>
+                </div>
+            <?php endif; ?>
+
+            <?php if(isset($_formAdGroup)) : ?>
+                <div class="m-1">
+                    <form method="post" id="<?= $_formAdGroup['form_id'] ?>" onchange="clickSubmit('<?= $_formAdGroup['form_id'] ?>')">
+                        <?= $_formAdGroup['csrf'] ?>
+                        <div class="form-group my-1">
+                            <?= $_formAdGroup[AmazonAdsAdGroupTable::AD_GROUP_ID] ?>
+                        </div>
+                        <?= $_formAdGroup['adGroup-button'] ?>
+                    </form>
+                </div>
+            <?php endif; ?>
+
+            <?php if(isset($_formReport)) : ?>
+                <div class="m-1">
+                    <form method="post" id="<?= $_formReport['form_id'] ?>" onchange="clickSubmit('<?= $_formReport['form_id'] ?>')">
+                        <?= $_formReport['csrf'] ?>
+                        <div class="form-group my-1">
+                            <?= $_formReport[DataRaw::REPORT_TYPE_ID] ?>
+                        </div>
+                        <?= $_formReport['report-button'] ?>
+                    </form>
+                </div>
+
+                <?php if(isset($_formCheckReport)) : ?>
+                    <a href="#check-boxes" aria-controls="check-boxes" class="btn btn-sm btn-outline-info mt-auto mb-1 small py-0" data-toggle="collapse" aria-expanded="false">
+                        Columns options
+                    </a>
+                    <?= isset($_formCheckReport) ? $_formCheckReport['check-report-button'] : '' ?>
+                <?php endif; ?>
+
+            <?php endif; ?>
+        </div>
+
+        <?php if(isset($_formCheckReport)) : ?>
+            <div id="check-boxes" class="collapse border rounded small p-1">
+                <form method="post" id="<?= $_formCheckReport['form_id'] ?>">
+                    <?= $_formCheckReport['csrf'] ?>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 form-check form-check-inline no-gutters ml-5 ml-sm-1">
+                        <?php foreach ($checkBoxKeys as $col) : ?>
+                            <div class="">
+                                <?= $_formCheckReport[$col] ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </form>
+            </div>
+        <?php endif; ?>
+
+        <?php if(isset($reports)) : ?>
+            <table class="table table-hover table-sm table-sm table-bordered" style="overflow: visible;">
+                <thead class="thead-light" style="position: sticky;top: 89px;">
+                <tr>
+                    <?php foreach ($selectCol as $col) : ?>
+                        <th class="small font-weight-bold py-0 px-1 text-center" title="<?= ReportDictionary::DICTIONARY[$col]['description'] ?>"><?= ReportDictionary::DICTIONARY[$col]['title']  ?></th>
+                    <?php endforeach; ?>
+                </tr>
+                </thead>
+                <tbody class="">
+
+                <?php
+                array_shift($selectCol); // odobratie start date
+                array_shift($selectCol); // odobratie end date
+                ?>
+
+                <?php foreach ($reports as $report): ?>
+                    <?php
+                    $startDate = DateTimeUtilities::formatToShape($report['date'][SelectDateTable::SELECT_START_DATE],'d.m.y');
+                    $endDate = DateTimeUtilities::formatToShape($report['date'][SelectDateTable::SELECT_END_DATE],'d.m.y');
+                    $colspan = count($selectCol);
+                    ?>
+                    <?php if (isset($report['data'])) : ?>
+                        <?php foreach ($report['data'] as $data): ?>
+                            <tr>
+                                <?php
+                                $startDate = DateTimeUtilities::formatToShape($report['date'][SelectDateTable::SELECT_START_DATE],'d.m.y');
+                                $endDate = DateTimeUtilities::formatToShape($report['date'][SelectDateTable::SELECT_END_DATE],'d.m.y');
+                                $colspan = count($selectCol);
+                                ?>
+                                <td class="py-0 px-1" title="<?= StringUtilities::underlineToCamel(SelectDateTable::SELECT_START_DATE) ?>"><?= $startDate ?></td>
+                                <td class="py-0 px-1" title="<?= StringUtilities::underlineToCamel(SelectDateTable::SELECT_END_DATE) ?>"><?= $endDate ?></td>
+                                <?php foreach ($selectCol as $col): ?>
+                                    <td class="py-0 px-1" title="<?= StringUtilities::underlineToCamel($col) ?>">
+                                        <?=
+                                        (is_numeric($data[$col]) ? round($data[$col],2)
+                                            : ($col === $reportTable::KEYWORD && !empty($keywordUrl) ? '<a href="' . $keywordUrl . '/' . $data[$col] . '">' . $data[$col] . '</a>'
+                                                : (defined(get_class($reportTable).'::SEARCH_TERM')
+                                                    ? ($col === $reportTable::SEARCH_TERM && !empty($keywordUrl)
+                                                        ? '<a href="' . $keywordUrl . '/0/' . $data[$col] . '">' . $data[$col] . '</a>'
+                                                        : $data[$col])
+                                                    : $data[$col]
+                                                )))
+                                        ?>
+                                    </td>
+                                <?php endforeach; ?>
+                            </tr>
+
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <td class="py-0 px-1" title="<?= StringUtilities::underlineToCamel(SelectDateTable::SELECT_START_DATE) ?>"><?= $startDate ?></td>
+                        <td class="py-0 px-1" title="<?= StringUtilities::underlineToCamel(SelectDateTable::SELECT_END_DATE) ?>"><?= $endDate ?></td>
+                        <td colspan="<?= $colspan ?>" class="py-0 px-1">Data unavailable</td>
+                    <?php endif; ?>
+                    <tr class="bg-light"><td colspan = 100%></td></tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </section>
+    <footer>
+    </footer>
+</article>
+<script src="js/clickSubmit.js"></script>
