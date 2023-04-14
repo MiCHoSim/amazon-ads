@@ -95,10 +95,21 @@ class AmazonAdsProfileTable extends Table
         return $profileId ? $profileId[self::PROFILE_ID] : false;
     }
 
-    // požiadavky ktore che zákaznik kombinovať
-    const COMBINE_PROFILE = ['EU' => 'eu', 'UK+EU' => 'uk+eu'];
-    const FULL_COMBINE_PROFILE = ['EU' => ['DE','FR','ES','IT','NL','SE','PL'], 'UK+EU' => ['UK','DE','FR','ES','IT','NL','SE','PL']];
+    // požiadavky ktoré che zákaznik kombinovať
+    const COMBINE_PROFILE = ['UK' => 'uk','EU' => 'eu', 'UK+EU' => 'uk+eu'];
+    const FULL_COMBINE_PROFILE = ['UK' => 'UK', 'EU' => ['DE','FR','ES','IT','NL','SE','PL'], 'UK+EU' => ['UK','DE','FR','ES','IT','NL','SE','PL']];
     const CUSTOM_SORT = ['UK','DE','FR','ES','IT','NL','SE','PL'];
+
+    /**
+     ** Vrýti combine profile const bez UK
+     * @return string[]
+     */
+    public static function combineProfileWithouUk()
+    {
+        $combineProfile = self::COMBINE_PROFILE;
+        array_shift($combineProfile);
+        return $combineProfile;
+    }
 
     /**
      ** zoradí krajiny podľapožiadavky zákaznika ... casom mozno dorobiť podľa db

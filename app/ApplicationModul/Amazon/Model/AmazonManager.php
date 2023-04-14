@@ -42,7 +42,7 @@ class AmazonManager
 
         // pridenie ostatnych mozosti výberu polapožiadavky
         if(get_class($this->controller) === AmazonMonthlySalesController::NAME)
-            $profiles = array_merge($profiles,AmazonAdsProfileTable::COMBINE_PROFILE);
+            $profiles = array_merge($profiles,AmazonAdsProfileTable::combineProfileWithouUk());
 
         if(!$profiles)
         {
