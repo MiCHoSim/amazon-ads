@@ -98,7 +98,7 @@ class AppManagementController extends Controller
                 $formSet->validate($formData);
                 $connection->amazonAdsConfigTable->setRefreshToken(null); // resetujem refresh token kvoli zmene základných údajov
                 $connection->amazonAdsConfigTable->setData($formData);
-                print_r($formData);
+                //print_r($formData);
                 $connection->amazonAdsConfigTable->save(true);
 
                 $this->addMessage('Amazon Advertising configuration data has been saved.', self::MSG_SUCCESS);

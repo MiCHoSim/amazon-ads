@@ -29,7 +29,7 @@ class AccountManager
             // uloži osobu
             $personData = array(PersonTable::PERSON_DETAIL_ID => $personDetailId,
                                 PersonTable::USER_ID => UserTable::$user[UserTable::USER_ID]);
-            print_r($personData);
+            //print_r($personData);
 
             $personManager->savePerson($personData);
         }

@@ -278,6 +278,74 @@ class AmazonMonthlySalesController extends Controller
     }
 
 
+
+,
+
+    /**
+     * @param $profileId
+     * @param $year
+     * @param $monthNumbers
+     * @param $total
+     * @param $product
+     * @return void
+     * @throws \ErrorException
+     * @Action
+     */
+    public function monthlySalesPcs($profileId = null, $year = null, $monthNumbers = 'all', $total = 'false', $product = null)
+    {
+
+        /*
+        //$this->amazonManager->basicTemplateSetings($profileId, true);
+
+        $selectYear = !empty($year) ? $year : DateTimeUtilities::yearNow();
+
+        $url = 'amazon-monthly-sales/monthly-sales/' . $this->connection->profileId . '/';
+        //$monthNumber = !empty($monthNumber) ? $monthNumber : $datetime->format('n');
+
+        $amazonMonthlySalesManager = new AmazonMonthlySalesManager();
+
+        $formDate = new Form('dates');
+        $formDate->addSelect('Years','year',$amazonMonthlySalesManager->getYears(), $selectYear,false, 'dates','','font-weight-bolder');
+        $formDate->addSelect('Month','month',DateTimeUtilities::getMonthFull(), explode('-', $monthNumbers),true, 'dates','mul-select form-control','font-weight-bolder', true,false);
+        $formDate->addSubmit('dates','dates-button','dates','sr-only');
+        if($formDate->dataProcesing())
+        {
+            try
+            {
+                $formData = $formDate->getData();
+                $formDate->validate($formData);
+                // zakliknutie aj all aj mesiacov
+                $months = $formData['month'][0] === 'all' ? 'all' : implode('-', $formData['month']);
+
+                //print_r($months);die;
+                $this->redirect($url . $formData['year'] . '/' . $months . '/' . $total . '/' . $product);
+            }
+            catch (ValidationException $error)
+            {
+                $this->addMessage($error->getMessages(), self::MSG_ERROR);
+            }
+        }
+        if(!empty($product) || $total === 'true')
+            $this->data['back'] = $url . $selectYear . '/' . $monthNumbers . '/false';
+        else
+        {
+            $this->data['productUrl'] = $url . $selectYear . '/' . $monthNumbers . '/' . $total;
+            $this->data['totalUrl'] = $url . $selectYear . '/' . $monthNumbers . '/true';
+        }
+
+        $this->data['formMonths'] = $formDate->createForm();
+
+        $amazonMonthlySalesTable = new AmazonMonthlySalesTable();
+        $this->data['monthlySalesData'] = $amazonMonthlySalesTable->getMonthlySales($this->connection->profileId, $monthNumbers, $total, $product);
+        $this->data['total'] = $total;
+        $this->data['combine'] = array_search($profileId, AmazonAdsProfileTable::COMBINE_PROFILE);
+*/
+
+
+        $this->data['method'] = 'monthly-sales-pcs';
+        $this->view = 'monthly-sales-pcs';
+    }
+
     static function view($data)
     {
         $i = 1;
