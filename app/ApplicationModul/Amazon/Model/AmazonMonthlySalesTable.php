@@ -8,8 +8,10 @@ use AmazonAdvertisingApi\Table\AmazonAdsSpAdvertisedProductTable;
 use AmazonAdvertisingApi\Table\AmazonAdsSpTargetingTable;
 use AmazonAdvertisingApi\Table\SelectDateTable;
 use AmazonAdvertisingApi\Table\Table;
+use App\AccountModul\Model\UserTable;
 use App\ApplicationModul\Amazon\Controller\AmazonMonthlySalesController;
 use App\ApplicationModul\AppManagement\Model\AmazonProductDataTable;
+use http\Client\Curl\User;
 use Micho\Db;
 use DateTime;
 use Micho\Utilities\DateTimeUtilities;
@@ -199,6 +201,9 @@ class AmazonMonthlySalesTable extends Table
      */
     public function getMonthlySales(string $profileId,string $monthNumbers, string $total, string|null $product) : array
     {
+        $whereKeys = [$this->table . '.' . AmazonAdsProfileTable::USER_ID];
+        $whereValues = [UserTable::$user[UserTable::USER_ID]];
+
         // ak je zadane eu alebo eu+uk tvitvaram odlisne SELECT a WHERE query prezakladne dáta
         $combine = array_search($profileId, AmazonAdsProfileTable::COMBINE_PROFILE);
         $groupBy = ' ';
@@ -221,15 +226,11 @@ class AmazonMonthlySalesTable extends Table
                     $whereKeysCombine .= ' OR ';
             }
             $whereKeysCombine .= ')';
-
-            //jednotiky preto ze mi zo vytvoir 1=1 a nepise chzbu ze neznamy whereKeys
-            $whereKeys = ['1'];
-            $whereValues = ['1'];
         }
         else
         {
-            $whereKeys = [$this->table . '.' . AmazonAdsProfileTable::PROFILE_ID];
-            $whereValues = [$profileId];
+            $whereKeys = array_merge($whereKeys,[$this->table . '.' . AmazonAdsProfileTable::PROFILE_ID]);
+            $whereValues = array_merge($whereValues,[$profileId]);
         }
 
         $keys = [];
