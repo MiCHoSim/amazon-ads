@@ -3,6 +3,7 @@ use AmazonAdvertisingApi\Table\AmazonAdsPortfolioTable;
 use Micho\Utilities\DateTimeUtilities;
 use AmazonAdvertisingApi\Table\SelectDateTable;
 use App\ApplicationModul\Amazon\Model\AmazonMonthlySalesTable;
+use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
 ?>
 
 <article class="mx-1">
@@ -62,7 +63,9 @@ use App\ApplicationModul\Amazon\Model\AmazonMonthlySalesTable;
                                     : (is_numeric($report[$key]) ? round($report[$key],2)
                                         : (($key === AmazonAdsPortfolioTable::NAME || $key === AmazonMonthlySalesTable::SKU) && !empty($productUrl)
                                             ? '<a href="' . $productUrl . '/' . ($key === AmazonMonthlySalesTable::SKU ? 'sku' : 'name' ) . '=' . $report[$key] . '">' . $report[$key] . '</a>'
-                                            : $report[$key]))?>
+                                            : ($key === AmazonAdsProfileTable::COUNTRY_CODE
+                                                ? ($combine !== false ? '<b>'.$combine.'</b>' : '<b>'.$report[$key].'</b>')
+                                                : $report[$key])))?>
                             </td>
 
                         <?php endforeach; ?>

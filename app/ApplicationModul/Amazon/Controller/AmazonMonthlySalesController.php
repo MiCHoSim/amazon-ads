@@ -4,6 +4,7 @@ namespace App\ApplicationModul\Amazon\Controller;
 
 use AmazonAdvertisingApi\Connection\Connection;
 use AmazonAdvertisingApi\Table\AmazonAdsPortfolioTable;
+use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
 use App\AccountModul\Model\UserTable;
 use App\ApplicationModul\Amazon\Model\AmazonManager;
 use App\ApplicationModul\Amazon\Model\AmazonMonthlySalesManager;
@@ -271,6 +272,7 @@ class AmazonMonthlySalesController extends Controller
 
         $this->data['monthlySalesData'] = $amazonMonthlySalesTable->getMonthlySales($this->connection->profileId, $monthNumbers, $total, $product);
         $this->data['total'] = $total;
+        $this->data['combine'] = array_search($profileId, AmazonAdsProfileTable::COMBINE_PROFILE);
         $this->data['method'] = 'monthly-sales';
         $this->view = 'monthly-sales';
     }
