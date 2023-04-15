@@ -28,54 +28,42 @@ use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
             </div>
         </div>
 
-        <table class="table table-hover table-sm table-sm table-bordered " style="overflow: visible;">
+        <table class="table table-hover table-sm table-sm table-bordered table-responsive" style="overflow: visible;">
             <thead class="thead-light" style="position: sticky;top: 89px;">
             <tr class="">
-                <?php foreach ($monthlySalesData['tableHeader'] as $key) : ?>
-                    <th class="small font-weight-bold py-0 px-1 text-center" title="<?= AmazonMonthlySalesTable::DICTIONARY[$key]['description'] ?>"><?= AmazonMonthlySalesTable::DICTIONARY[$key]['title'] ?></th>
+                <?php foreach ($monthlySalesPcsAllProduct['tableHeader'] as $key => $head) : ?>
+                    <th class="small font-weight-bold py-0 px-1 text-center">
+                        <?= $key === array_key_first($monthlySalesPcsAllProduct['tableHeader'])
+                            ? $head
+                            : DateTimeUtilities::yearMonth($head) ?>
+                    </th>
                 <?php endforeach; ?>
+                <?php array_shift($monthlySalesPcsAllProduct['tableHeader']) // odstranenie Product ?>
             </tr>
             </thead>
             <tbody class="">
-            <?php foreach ($monthlySalesData['monthData'] as $monthData): ?>
-                <?php foreach ($monthData['allData'] as $index => $report): ?>
-                    <tr>
-                        <?php foreach ($monthlySalesData['tableHeader'] as $key): ?>
-                            <td class="py-0 px-1">
-                                <?= ($key === SelectDateTable::SELECT_START_DATE || $key === SelectDateTable::SELECT_END_DATE)
-                                    ? DateTimeUtilities::formatToShape($report[$key],'d.m.y')
-                                    : (is_numeric($report[$key]) ? round($report[$key],2)
-                                        : (($key === AmazonAdsPortfolioTable::NAME || $key === AmazonMonthlySalesTable::SKU) && !empty($productUrl)
-                                            ? '<a href="' . $productUrl . '/' . ($key === AmazonMonthlySalesTable::SKU ? 'sku' : 'name' ) . '=' . $report[$key] . '">' . $report[$key] . '</a>'
-                                            : ($key === AmazonAdsProfileTable::COUNTRY_CODE
-                                                ? ($combine !== false ? '<b>'.$combine.'</b>' : '<b>'.$report[$key].'</b>')
-                                                : $report[$key])))?>
-                            </td>
-
-                        <?php endforeach; ?>
-                    </tr>
-                <?php endforeach; ?>
-                <tr class="text-nowrap" <?= isset($totalUrl) ? 'onclick="location.href=\'' . $totalUrl . '\'"' : '' ?>>
-                    <?php foreach ($monthlySalesData['tableHeader'] as $key) : ?>
-                        <th class="py-0 px-1">
-                            <?= isset($monthData['totalData'][$key])
-                                ? (($key === SelectDateTable::SELECT_START_DATE || $key === SelectDateTable::SELECT_END_DATE)
-                                ? DateTimeUtilities::formatToShape($monthData['totalData'][$key],'d.m.y')
-                                : (is_numeric($monthData['totalData'][$key]) ? round($monthData['totalData'][$key],2) : '')): ''?>
-
-                        </th>
+            <?php foreach ($monthlySalesPcsAllProduct['monthData'] as $productName => $monthData): ?>
+                <tr>
+                    <td class="py-0 px-1">
+                        <?= $productName ?>
+                    </td>
+                    <?php foreach ($monthlySalesPcsAllProduct['tableHeader'] as $key => $data): ?>
+                        <td><?= isset($monthData[$data]) ? $monthData[$data] : '' ?></td>
                     <?php endforeach; ?>
                 </tr>
             <?php endforeach; ?>
-            <tr class="bg-dark"><td colspan = 100%></td></tr>
-            <tr class="text-nowrap">
-                <?php foreach ($monthlySalesData['tableHeader'] as $key) : ?>
-                    <th class="py-0 px-1"><?= isset($monthlySalesData['allTotalData'][$key]) ? round($monthlySalesData['allTotalData'][$key],2) : '' ?></th>
+            <tr>
+                <th class="py-0 px-1">
+                    <?= $name = array_key_first($monthlySalesPcsAllProduct['monthTotalData']) ?>
+                </th>
+                <?php foreach ($monthlySalesPcsAllProduct['tableHeader'] as $key => $data): ?>
+                    <th><?= $monthlySalesPcsAllProduct['monthTotalData'][$name][$data] ?></th>
                 <?php endforeach; ?>
-
             </tr>
             </tbody>
         </table>
+
+
     </section>
     <footer>
     </footer>

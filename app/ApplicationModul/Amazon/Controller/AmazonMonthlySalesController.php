@@ -295,8 +295,9 @@ class AmazonMonthlySalesController extends Controller
 
         $amazonMonthlySalesTable = new AmazonMonthlySalesTable();
 
-        $this->data['monthlySalesPcsProduct'] = $amazonMonthlySalesTable->getMonthlyPcsSales($profileCode, AmazonMonthlySalesTable::SKU);
+        $monthlyPcsSales = $amazonMonthlySalesTable->getMonthlyPcsSales($profileCode, AmazonMonthlySalesTable::SKU);
 
+        $this->data['monthlySalesPcsAllProduct'] = $amazonMonthlySalesTable->easyListingAllProduct($monthlyPcsSales);
 
 
         /*

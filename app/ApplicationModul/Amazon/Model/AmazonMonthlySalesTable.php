@@ -342,21 +342,48 @@ class AmazonMonthlySalesTable extends Table
         //vytvorenie groupByQuery
         $groupByQuery = ' GROUP BY ' . $this->table . '.' . $groupBy;
 
-
-
         // prejdenie vŠetkých mesiacov
         $dates = $this->getDateOfUser($this->userId);
         foreach ($dates as $key => $date)
         {
+
             $whereQueryWithDate = $whereQuery . ' AND ' . SelectDateTable::SELECT_START_DATE . ' = ? ';
 
             //print_r($selectQuery . $fromQuery . $joinQuery . $whereQueryWithDate . $groupByQuery); die;
 
-            $monthData[$key]['allData'] = Db::queryAllRows($selectQuery . $fromQuery . $joinQuery . $whereQueryWithDate . $groupByQuery, array_merge($whereValues, [$date]));
-            $monthData[$key]['totalData'] = Db::queryOneRow($selectQueryTotals . $fromQuery . $joinQuery . $whereQueryWithDate, array_merge($whereValues, [$date]));
+            $monthData[$date]['allData'] = Db::queryAllRows($selectQuery . $fromQuery . $joinQuery . $whereQueryWithDate . $groupByQuery, array_merge($whereValues, [$date]));
+            $monthData[$date]['totalData'] = Db::queryOneRow($selectQueryTotals . $fromQuery . $joinQuery . $whereQueryWithDate, array_merge($whereValues, [$date]));
         }
-        AmazonAdsController::view($monthData);
+       // AmazonAdsController::view($monthData);echo"<br>";echo"<br>";
+
+        //AmazonAdsController::view($newMonth);
+        return $monthData;
     }
+
+    /**
+     ** upravý pre ľahší výpis jednotlivých produktov pre SUM krajín
+     * @return array
+     */
+    public function easyListingAllProduct($monthData)
+    {
+        //upravy pre riadkový výpis
+        $newMonth = array();
+        $newMonth['tableHeader'][] = 'Product';
+        foreach ($monthData as $date => $data)
+        {
+            //print_r($monthData[$date]['totalData']);
+            $newMonth['tableHeader'][] = $date;
+
+            foreach ($data['allData'] as $key => $product)
+            {
+                $newMonth['monthData'][$product[AmazonAdsPortfolioTable::NAME]][$date] = $product[self::UNITS_SOLD];
+            }
+            $newMonth['monthTotalData']['Monthly total'][$date] = $monthData[$date]['totalData'][self::UNITS_SOLD];
+        }
+        //AmazonAdsController::view($newMonth);
+        return $newMonth;
+    }
+
 
     /**
 
@@ -372,7 +399,7 @@ class AmazonMonthlySalesTable extends Table
         $dates = Db::queryAllRows('SELECT ' . SelectDateTable::SELECT_START_DATE . '
                                 FROM ' . $this->table . '
                                 JOIN ' . SelectDateTable::SELECT_DATE_TABLE . ' USING (' . self::SELECT_DATE_ID . ') 
-                                WHERE ' . self::USER_ID . ' = ? GROUP BY ' . self::SELECT_DATE_ID, [$userId]);
+                                WHERE ' . self::USER_ID . ' = ? GROUP BY ' . self::SELECT_DATE_ID . ' ORDER BY ' . SelectDateTable::SELECT_START_DATE, [$userId]);
         return $dates ? array_column($dates, SelectDateTable::SELECT_START_DATE) : false;
     }
 

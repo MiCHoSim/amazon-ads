@@ -4,6 +4,7 @@ namespace Micho\Utilities;
 
 use DateTime;
 use InvalidArgumentException;
+use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Month;
 
 /**
  ** Pomocná trieda na prácu s Dátumom a Časom
@@ -351,6 +352,18 @@ class DateTimeUtilities
     {
         $dateTime = new DateTime();
         return $dateTime->format('Y');
+    }
+
+    /**
+     ** Z datumu databazoveho formatu rok-mesiac-den vytvori rok den
+     * @param string $dateDb datum v Db formate
+     * @return string
+     */
+    public static function yearMonth(string $dateDb)
+    {
+        $datumExplode = explode('-', $dateDb);
+
+        return $datumExplode[0] . ' ' . array_search($datumExplode[1], self::$month);
     }
 
 }
