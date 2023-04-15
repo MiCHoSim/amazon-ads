@@ -295,10 +295,14 @@ class AmazonMonthlySalesController extends Controller
 
         $amazonMonthlySalesTable = new AmazonMonthlySalesTable();
 
-        $monthlyPcsSales = $amazonMonthlySalesTable->getMonthlyPcsSales($profileCode, AmazonMonthlySalesTable::SKU);
-
+        $monthlyPcsSales = $amazonMonthlySalesTable->getMonthlyPcsSales($profileCode, AmazonMonthlySalesTable::SKU)['all'];
         $this->data['monthlySalesPcsAllProduct'] = $amazonMonthlySalesTable->easyListingAllProduct($monthlyPcsSales);
 
+        if($profileCode == 'eu') // iba pre eu
+        {
+            $monthlyPcsSales = $amazonMonthlySalesTable->getMonthlyPcsSales($profileCode, AmazonMonthlySalesTable::PROFILE_ID);
+            $this->data['monthlySalesPcsIndividualProduct'] = $amazonMonthlySalesTable->easyListingIndividualProduct($monthlyPcsSales);
+        }
 
         /*
         //$this->amazonManager->basicTemplateSetings($profileId, true);

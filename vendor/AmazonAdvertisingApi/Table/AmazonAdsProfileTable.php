@@ -135,7 +135,7 @@ class AmazonAdsProfileTable extends Table
      * @param $countryCodes
      * @return array|false
      */
-    public function getByCountry($countryCodes)
+    public function getIdByCountry($countryCodes)
     {
         $whereQuery = ' WHERE ';
         foreach ($countries = self::FULL_COMBINE_PROFILE[$countryCodes] as $key => $code)
