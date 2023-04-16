@@ -138,7 +138,7 @@ class AmazonAdsController extends Controller
         $formCheckReport = new Form('checkReport');
         foreach ($this->reportTable->checkBoxKeys as $nameDb)
         {
-            $formCheckReport->addCheckBox(StringUtilities::underlineToCamel($nameDb,false),
+            $formCheckReport->addCheckBox(ReportDictionary::DICTIONARY[$nameDb]['title'],
                 $nameDb,'',false,ReportDictionary::DICTIONARY[$nameDb]['description'],'checkReport','','',false);
         }
         $formCheckReport->addSubmit('Select columns','check-report-button','checkReport','btn btn-sm btn-outline-success mt-auto mb-1 small py-0');

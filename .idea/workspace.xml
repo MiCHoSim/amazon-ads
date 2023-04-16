@@ -89,7 +89,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681573254745</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="pridanie monthly sales pcs pre jednotlive produkty a krajiny">
+      <created>1681660949061</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1681660949061</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -113,6 +120,7 @@
     <MESSAGE value="pridanie nacitavania pre mothkyl sales  vsetky krajiny" />
     <MESSAGE value="pridanie monthly sales pcs pre Všetky produkty v jednej tabuľke" />
     <MESSAGE value="pridanie monthly sales pcs pre pre jednotlive tabulky ale bez vypisu" />
-    <option name="LAST_COMMIT_MESSAGE" value="pridanie monthly sales pcs pre pre jednotlive tabulky ale bez vypisu" />
+    <MESSAGE value="pridanie monthly sales pcs pre jednotlive produkty a krajiny" />
+    <option name="LAST_COMMIT_MESSAGE" value="pridanie monthly sales pcs pre jednotlive produkty a krajiny" />
   </component>
 </project>
