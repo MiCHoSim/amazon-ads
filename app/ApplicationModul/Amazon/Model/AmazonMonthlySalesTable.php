@@ -317,8 +317,19 @@ class AmazonMonthlySalesTable extends Table
         return ['tableHeader'=> array_keys(self::DICTIONARY), 'monthData' => $monthData, 'allTotalData' => $allTotalData];
     }
 
+    /**
+     ** NAčitanie dát pre Mesačne predaje Kusov v SUM krajinách pre vSětky položky alebo pre je jednotlive krajiny ppo položkácha pre jednotlive mesiace
+     * @param string $profileCode Kód profilu pre, ktorý chcem zobraziť data uk, eu, uk+eu
+     * @param string $groupBy Podľa čoho zgrupujem SKU PROFIL_ID
+     * @return array
+     */
     public function getMonthlyPcsSales(string $profileCode, string $groupBy) //: array
     {
+        $combine = array_search($profileCode, AmazonAdsProfileTable::COMBINE_PROFILE);
+        $amazonAdsProfileTable = new AmazonAdsProfileTable();
+        $profilesId = $amazonAdsProfileTable->getIdByCountry($combine);
+        $whereKeysCombine = $amazonAdsProfileTable->createWhere($profilesId);
+
         $variableSelect = '';
         $skuS = ['all'];
         $whereQuerySku = '';
@@ -327,7 +338,7 @@ class AmazonMonthlySalesTable extends Table
         elseif ($groupBy === AmazonMonthlySalesTable::PROFILE_ID)
         {
             $variableSelect = AmazonAdsProfileTable::COUNTRY_NAME;
-            $skuS = $this->getSkuNameOfUser($this->userId);
+            $skuS = $this->getSkuNameOfUser($this->userId, $whereKeysCombine, $profilesId);
             $whereQuerySku = ' AND ' . self::SKU . ' = ? ';
         }
         //vytvorenie whereQuery
@@ -345,10 +356,7 @@ class AmazonMonthlySalesTable extends Table
         //vytvorenie whereQuery
         $whereKeys = [$this->table . '.' . AmazonAdsProfileTable::USER_ID];
         $whereValues = [UserTable::$user[UserTable::USER_ID]];
-        $combine = array_search($profileCode, AmazonAdsProfileTable::COMBINE_PROFILE);
-        $amazonAdsProfileTable = new AmazonAdsProfileTable();
-        $profilesId = $amazonAdsProfileTable->getIdByCountry($combine);
-        $whereKeysCombine = $amazonAdsProfileTable->createWhere($profilesId);
+
         $whereQuery = ' WHERE ' . implode(' = ? AND ',$whereKeys) . ' = ?' . $whereKeysCombine;
         $whereValues = array_merge($whereValues, $profilesId);
 
@@ -380,50 +388,51 @@ class AmazonMonthlySalesTable extends Table
 
     /**
      ** upravý pre ľahší výpis jednotlivých produktov pre SUM krajín
+     * @param array $monthData Dáta
      * @return array
      */
-    public function easyListingAllProduct($monthData)
+    public function easyListingAllProduct(array $monthData)
     {
-        AmazonAdsController::view($monthData);
+        //AmazonAdsController::view($monthData);
         //upravy pre riadkový výpis
         $newMonth = array();
-        $newMonth['tableHeader'][] = 'Product';
         foreach ($monthData as $date => $data)
         {
             //print_r($monthData[$date]['totalData']);
-            $newMonth['tableHeader'][] = $date;
-
+            $newMonth['tableHeader']['Product'][] = $date;
             foreach ($data['allData'] as $key => $product)
             {
                 $newMonth['monthData'][$product[AmazonAdsPortfolioTable::NAME]][$date] = $product[self::UNITS_SOLD];
             }
             $newMonth['monthTotalData']['Monthly total'][$date] = $monthData[$date]['totalData'][self::UNITS_SOLD];
         }
-        AmazonAdsController::view($newMonth);
+        //AmazonAdsController::view($newMonth);
         return $newMonth;
     }
 
+    /**
+     ** upravý pre ľahší výpis jednotlivých produktov pre jednotlive krajiny krajiny
+     * @param array $monthData Dáta
+     * @return array
+     */
     public function easyListingIndividualProduct($monthData)
     {
-echo "<hr>";
-        AmazonAdsController::view($monthData);
-        die;
-
+        //AmazonAdsController::view($monthData['124 Pack']);
         //upravy pre riadkový výpis
         $newMonth = array();
-        $newMonth['tableHeader'][] = 'Product';
-        foreach ($monthData as $date => $data)
+        foreach ($monthData as $productName => $monthData)
         {
-            //print_r($monthData[$date]['totalData']);
-            $newMonth['tableHeader'][] = $date;
-
-            foreach ($data['allData'] as $key => $product)
+            foreach ($monthData as $date => $data)
             {
-                $newMonth['monthData'][$product[AmazonAdsPortfolioTable::NAME]][$date] = $product[self::UNITS_SOLD];
+                $newMonth[$productName]['tableHeader'][$productName][] = $date;
+                foreach ($data['allData'] as $key => $product)
+                {
+                    $newMonth[$productName]['monthData'][$product[AmazonAdsProfileTable::COUNTRY_NAME]][$date] = $product[self::UNITS_SOLD];
+                }
+                $newMonth[$productName]['monthTotalData']['Monthly total'][$date] = $monthData[$date]['totalData'][self::UNITS_SOLD];
             }
-            $newMonth['monthTotalData']['Monthly total'][$date] = $monthData[$date]['totalData'][self::UNITS_SOLD];
         }
-        AmazonAdsController::view($newMonth);
+        //AmazonAdsController::view($newMonth['tableHeader']);
         return $newMonth;
     }
 
@@ -446,14 +455,17 @@ echo "<hr>";
     /**
      ** Načíta monthly sales Sku Name daného uživateľa
      * @param string $userId Id uživateľa
+     * @param string $whereCombineProfiles Zostaveny query pre vsetky vybrane profili
+     * @param array $profilesId pole Id profilov
      * @return array|false
      */
-    private function getSkuNameOfUser(string $userId)
+    private function getSkuNameOfUser(string $userId, string $whereCombineProfiles, array $profilesId)
     {
         $sku = Db::queryAllRows('SELECT ' . self::SKU . ', ' . AmazonAdsPortfolioTable::NAME . '
                                 FROM ' . $this->table . '
-                                JOIN ' . AmazonAdsPortfolioTable::AMAZON_ADS_PORTFOLIO_TABLE . ' USING (' . self::PORTFOLIO_ID . ') 
-                                WHERE ' . $this->table . '.' . self::USER_ID . ' = ? GROUP BY ' . self::SKU, [$userId]);
+                                JOIN ' . AmazonAdsPortfolioTable::AMAZON_ADS_PORTFOLIO_TABLE . ' USING (' . self::PORTFOLIO_ID . ')
+                                JOIN ' . AmazonAdsProfileTable::AMAZON_ADS_PROFILE_TABLE . ' ON ' . $this->table . '.' . self::PROFILE_ID . ' = ' . AmazonAdsProfileTable::AMAZON_ADS_PROFILE_TABLE . '.' . self::PROFILE_ID . ' 
+                                WHERE ' . $this->table . '.' . self::USER_ID . ' = ? ' . $whereCombineProfiles . ' GROUP BY ' . self::SKU, array_merge([$userId],$profilesId));
 
         return $sku ? ArrayUtilities::getPairs($sku,self::SKU,AmazonAdsPortfolioTable::NAME) : false;
     }
