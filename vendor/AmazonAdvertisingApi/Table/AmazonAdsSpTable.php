@@ -123,7 +123,7 @@ abstract class AmazonAdsSpTable extends Table
      * @param string $profileId Id profilu
      * @return array|false|null
      */
-    public function getDownlaodingDates(string $userId, string $profileId) : ?array
+    public function getDownlaodingDates(string $userId, string $profileId)
     {
         $keys = [SelectDateTable::SELECT_START_DATE, SelectDateTable::SELECT_END_DATE];
 
