@@ -3,6 +3,7 @@ namespace App\ApplicationModul\AppManagement\Model;
 
 use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
 use AmazonAdvertisingApi\Table\Table;
+use App\ApplicationModul\Amazon\Controller\AmazonAdsController;
 use App\ApplicationModul\Amazon\Model\AmazonMonthlySalesManager;
 use Micho\Db;
 use Micho\Exception\UserException;
@@ -115,6 +116,24 @@ class AmazonProductDataTable extends Table
                             WHERE ' . self::PROFILE_ID . ' = ? AND ' . self::SKU . ' = ? ORDER BY ' . self::ADDITON_DATE . ' DESC LIMIT 1', [$profileId,$sku]);
 
         return $productDataId ? $productDataId : false;
+    }
+
+
+    /**
+     ** Ziska všetky hodnoty product data pre daného uživateľa
+     * @param string $userId
+     * @return array|false|null
+     */
+    public function getAllProductDataUserId(string $userId) : ?array
+    {
+        $keys = array_merge(self::KEYS,[AmazonAdsProfileTable::COUNTRY_CODE]);
+        $data = Db::queryAllRows('SELECT ' . implode(', ', $keys) . '
+                    FROM ' . self::AMAZON_PRODUCT_DATA_TABLE . '
+		            JOIN  ' . AmazonAdsProfileTable::AMAZON_ADS_PROFILE_TABLE . ' USING( ' . self::PROFILE_ID . ')
+		            WHERE  ' . AmazonAdsProfileTable::USER_ID . ' = ?
+		            ORDER BY  ' . self::AMAZON_PRODUCT_DATA_ID , [$userId]);
+
+        return $data ? ['tableHeader' => [self::SKU,AmazonAdsProfileTable::COUNTRY_CODE,self::FBA_FEES,self::LANDING_COST,self::BREAK_EVEN], 'data' => $data] : false;
     }
 
 }

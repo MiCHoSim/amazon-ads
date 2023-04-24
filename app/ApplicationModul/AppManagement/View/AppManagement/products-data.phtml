@@ -1,5 +1,9 @@
 <?php
 use AmazonAdvertisingApi\Report\DataRaw;
+use App\ApplicationModul\AppManagement\Model\AmazonProductDataTable;
+use App\ApplicationModul\Amazon\Model\AmazonMonthlySalesTable;
+use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
+use Micho\Utilities\DateTimeUtilities;
 ?>
 
 <article class="mx-1">
@@ -9,17 +13,63 @@ use AmazonAdvertisingApi\Report\DataRaw;
 
     <section class="mx-2">
         <h2 class="text-center text-monospace">Add new/update products data</h2>
-        <?php if (isset($_form)) : ?>
-            <form class="" method="post" id="<?= $_form['form_id'] ?>" enctype="multipart/form-data">
-                <?= $_form['csrf'] ?>
-                <div class="form-inline justify-content-center">
-                    <div class="custom-file w-auto"> <?= $_form['products-data'] ?></div>
-                    <span class="m-1"><?= $_form['upload-button'] ?></span>
-                </div>
-            </form>
 
-        <?php else: ?>
-        <?php endif; ?>
+        <div class="d-flex sticky-top bg-white justify-content-center" style="height: 45px">
+            <?php if (isset($_form)) : ?>
+                <form class="" method="post" id="<?= $_form['form_id'] ?>" enctype="multipart/form-data">
+                    <?= $_form['csrf'] ?>
+                    <div class="form-inline justify-content-center">
+                        <div class="custom-file w-auto"> <?= $_form['products-data'] ?></div>
+                        <span class="m-1"><?= $_form['upload-button'] ?></span>
+                    </div>
+                </form>
+            <?php endif; ?>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div>
+                <table class="table table-hover table-sm table-bordered" style="overflow: visible;">
+                    <thead class="thead-light" style="position: sticky;top: 44px;">
+                    <tr class="">
+                        <?php foreach ($productsData['tableHeader'] as $key) : ?>
+                            <th class="small font-weight-bold py-0 px-1 text-center" title="<?= AmazonMonthlySalesTable::DICTIONARY[$key]['description'] ?>"><?= AmazonMonthlySalesTable::DICTIONARY[$key]['title'] ?></th>
+                        <?php endforeach; ?>
+                    </tr>
+                    </thead>
+                    <tbody class="">
+                    <?php $date = null; ?>
+                    <?php foreach ($productsData['data'] as $key => $productData): ?>
+                        <?php if ($date !== $productData[AmazonProductDataTable::ADDITON_DATE]) : ?>
+                            <?php
+                            $date = $productData[AmazonProductDataTable::ADDITON_DATE];
+                            $dataId = 'data-' . $key;
+                            ?>
+                            <tr data-toggle="collapse" data-target="#<?= $dataId ?>" aria-expanded="true" aria-controls="data-collapse" class="">
+                                <td class="font-weight-bold" colspan = 100%>
+
+                            <span class="btn btn-sm btn-success">
+                                <i class="fas fa-arrow-down"></i>
+                                <?= DateTimeUtilities::formatToShape($date,'d.m.Y')?>
+                                <i class="fas fa-arrow-down"></i>
+                            </span>
+
+                                </td>
+                            </tr>
+                        <?php endif;?>
+                        <?php $date ?>
+                        <tr class="collapse" id="<?= $dataId ?>">
+                            <?php foreach ($productsData['tableHeader'] as $key): ?>
+                                <td class="py-0 px-1">
+                                    <?= $productData[$key] ?>
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </section>
     <footer>
     </footer>

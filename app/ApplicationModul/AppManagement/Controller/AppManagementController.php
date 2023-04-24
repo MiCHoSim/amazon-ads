@@ -15,6 +15,7 @@ use AmazonAdvertisingApi\Connection\Connection;
 use App\AccountModul\Model\UserTable;
 use App\ApplicationModul\AppManagement\Model\AmazonProductDataTable;
 use App\BaseModul\System\Controller\Controller;
+use Couchbase\User;
 use Micho\Exception\UserException;
 use Micho\Exception\ValidationException;
 use Micho\Form\File;
@@ -378,7 +379,9 @@ class AppManagementController extends Controller
                 $this->addMessage($error->getMessage(),self::MSG_ERROR);
             }
         }
+
         $this->data['form'] = $form->createForm();
+        $this->data['productsData'] = $amazonProductDataTable->getAllProductDataUserId($this->userId);
 
         $this->data['method'] = 'products-data';
         $this->view = 'products-data';
