@@ -124,7 +124,7 @@ class AmazonProductDataTable extends Table
      * @param string $userId
      * @return array|false|null
      */
-    public function getAllProductDataUserId(string $userId) : ?array
+    public function getAllProductDataUserId(string $userId) //: ?array
     {
         $keys = array_merge(self::KEYS,[AmazonAdsProfileTable::COUNTRY_CODE]);
         $data = Db::queryAllRows('SELECT ' . implode(', ', $keys) . '
