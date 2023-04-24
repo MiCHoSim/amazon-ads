@@ -2,6 +2,7 @@
 use AmazonAdvertisingApi\Report\DataRaw;
 use AmazonAdvertisingApi\Report\ConstRaw;
 use AmazonAdvertisingApi\Table\SelectDateTable;
+use Micho\Utilities\DateTimeUtilities;
 
 ?>
 
@@ -38,7 +39,9 @@ use AmazonAdvertisingApi\Table\SelectDateTable;
         <?php foreach ($dateSpTargSearch as $key => $spTypeData): ?>
             <strong><?= array_flip(ConstRaw::REPORT_TYPE_ID)[$key] ?></strong>
             <?php foreach ($spTypeData as $date): ?>
-                <span class="btn btn-sm btn-success m-0"><?= $date[SelectDateTable::SELECT_START_DATE] ?> -> <?= $date[SelectDateTable::SELECT_END_DATE] ?></span>
+                <span class="btn btn-sm btn-success m-0">
+                    <?= DateTimeUtilities::formatToShape($date[SelectDateTable::SELECT_START_DATE],'j.m.y') ?>
+                    -> <?= DateTimeUtilities::formatToShape($date[SelectDateTable::SELECT_END_DATE],'j.m.y') ?></span>
             <?php endforeach; ?>
             <hr>
         <?php endforeach; ?>
