@@ -3,7 +3,11 @@
 namespace App\ApplicationModul\Amazon\Model;
 
 
+use AmazonAdvertisingApi\Report\ConstRawSpSearchTerm;
+use AmazonAdvertisingApi\Report\ConstRawSpTargeting;
 use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
+use AmazonAdvertisingApi\Table\AmazonAdsSpSearchTermTable;
+use AmazonAdvertisingApi\Table\AmazonAdsSpTargetingTable;
 use AmazonAdvertisingApi\Table\Table;
 use App\ApplicationModul\Amazon\Controller\AmazonMonthlySalesController;
 use App\BaseModul\System\Controller\Controller;
@@ -84,6 +88,23 @@ class AmazonManager
         $this->controller->data['profile'] = $this->controller->connection->profileId;
         $this->controller->data['formStates'] = $formStates->createForm();
         $this->controller->data['profileMenu'] = '../app/ApplicationModul/Amazon/View/menu-header.phtml';
+    }
+
+    /**
+     ** Vráťi rozpetie Dátumu pre sp targeting a searchTearm ktoré úživateľ už stahoval pre daného uzivatela a profil
+     * @param string $userId Id uzivatela
+     * @param string $profileId Id profilu
+     * @return array[]
+     */
+    public function getDateSpTargSearch(string $userId, string $profileId) : array
+    {
+        $amazonAdsSpTargetingTable = new AmazonAdsSpTargetingTable();
+        $amazonAdsSpSearchTermTable = new AmazonAdsSpSearchTermTable();
+
+        $targetingDates = $amazonAdsSpTargetingTable->getDownlaodingDates($userId, $profileId);
+        $searchTermDates = $amazonAdsSpSearchTermTable->getDownlaodingDates($userId, $profileId);
+
+        return [ConstRawSpTargeting::REPORT_TYPE_ID => $targetingDates, ConstRawSpSearchTerm::REPORT_TYPE_ID => $searchTermDates];
     }
 
     private function view($data)

@@ -1,5 +1,8 @@
 <?php
 use AmazonAdvertisingApi\Report\DataRaw;
+use AmazonAdvertisingApi\Report\ConstRaw;
+use AmazonAdvertisingApi\Table\SelectDateTable;
+
 ?>
 
 <article class="mx-1">
@@ -29,6 +32,17 @@ use AmazonAdvertisingApi\Report\DataRaw;
                 <a class="btn btn-sm btn-outline-info mt-auto mb-1 small py-0" href="amazon-ads/download/<?= $profileId ?>">Restart downloading</a>
             </div>
         </form>
+
+        <hr>
+        <h4><u>Downloaded dates</u></h4>
+        <?php foreach ($dateSpTargSearch as $key => $spTypeData): ?>
+            <strong><?= array_flip(ConstRaw::REPORT_TYPE_ID)[$key] ?></strong>
+            <?php foreach ($spTypeData as $date): ?>
+                <span class="btn btn-sm btn-success m-0"><?= $date[SelectDateTable::SELECT_START_DATE] ?> -> <?= $date[SelectDateTable::SELECT_END_DATE] ?></span>
+            <?php endforeach; ?>
+            <hr>
+        <?php endforeach; ?>
+
     </section>
     <footer>
     </footer>

@@ -371,6 +371,8 @@ class AmazonAdsController extends Controller
         RouterController::$subPageControllerArray['title'] = 'Amazon Ads Download Data'; // pridanie doplnujúceho description k hlavnému
         RouterController::$subPageControllerArray['description'] = 'Download and save Targeting and Search terms to Database'; // pridanie doplnujúceho description k hlavnému
 
+        $this->data['dateSpTargSearch'] = $this->amazonManager->getDateSpTargSearch($this->userId, $this->connection->profileId);
+
         $this->data['reportId'] = $reportId;
         $this->data['profileId'] = $this->connection->profileId;
         $this->data['currentUrl'] = self::$currentUrl;

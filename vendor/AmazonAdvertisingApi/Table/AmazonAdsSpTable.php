@@ -117,4 +117,25 @@ abstract class AmazonAdsSpTable extends Table
             $this::CAMPAIGN_ID => $campaignId, $this::AD_GROUP_ID => $adGroupId];
     }
 
+    /**
+     ** Vráti dátumi v ktorach uživateľ stahoval reporty v danej krajine
+     * @param string $userId Id uzivatela
+     * @param string $profileId Id profilu
+     * @return array|false|null
+     */
+    public function getDownlaodingDates(string $userId, string $profileId) : ?array
+    {
+        $keys = [SelectDateTable::SELECT_START_DATE, SelectDateTable::SELECT_END_DATE];
+
+        $dates = Db::queryAllRows('
+                SELECT ' . implode(', ', $keys) . '
+                FROM ' . $this->table . '
+                JOIN ' . SelectDateTable::SELECT_DATE_TABLE . ' USING (' . self::SELECT_DATE_ID . ')
+                WHERE ' . self::USER_ID . ' = ? AND  ' . self::PROFILE_ID . ' = ?
+                GROUP BY ' . self::SELECT_DATE_ID . '
+                ORDER BY  ' . SelectDateTable::SELECT_START_DATE . ',  ' . SelectDateTable::SELECT_END_DATE, [$userId,$profileId]);
+
+        return $dates ? $dates : false;
+    }
+
 }
