@@ -152,6 +152,17 @@ class AmazonAdsProfileTable extends Table
     }
 
     /**
+     ** Vrati Country code podľa profile_id
+     * @param  string $profileId id profilu
+     * @return false|mixed
+     */
+    public function getCountryCode(string $profileId)
+    {
+        return Db::queryAlone('SELECT ' . self::COUNTRY_CODE . '  
+                            FROM ' . self::AMAZON_ADS_PROFILE_TABLE . ' WHERE ' . self::PROFILE_ID . ' = ? ', [$profileId]);
+    }
+
+    /**
      ** Vytvori whereQuery pre vyber viacerých profilov podlľa Profile_id
      * @param array $profilesId
      * @return string

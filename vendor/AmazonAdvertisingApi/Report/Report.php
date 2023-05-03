@@ -367,10 +367,11 @@ class Report
      * @param array $bidData Data potrebné pre stahovanie budov
      * @param string $campaignId Id kampane
      * @param string $adGroupId id reklamnej skupiny
+     * @param string $profileId Id profilo poŽadované len pre ThemeBidReco... pre rohodntie ci podporuje
      * @return array polé dát pre priradenie do reportu
      * @throws Exception
      */
-    public function getBids(array $bidData, string $campaignId, string $adGroupId) : array //string $campaignId, string $adGroupId, string $matchType, string $keyword
+    public function getBids(array $bidData, string $campaignId, string $adGroupId, $profileId = null) : array //string $campaignId, string $adGroupId, string $matchType, string $keyword
     {
         $amazonAdsSpTargetingId = $bidData[AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID];
         $keyword = $bidData[AmazonAdsSpTargetingTable::KEYWORD];
@@ -400,12 +401,22 @@ class Report
             }
             elseif (in_array($matchType, ThemeBasedBidRecommendation::MATCH_TYPE_OPTIONS))
             {
-                $amazonAdsThemeBasedBidRecommendationTable = new AmazonAdsThemeBasedBidRecommendationTable();
-                $targetingExpressionTypeKeyword = strtoupper(StringUtilities::changeChar($keyword,'-','_'));
-                $dataThemeBasedBidRecommendation = $this->connection->themeBasedBidRecommendation($campaignId, $adGroupId, $targetingExpressionTypeKeyword)->prepareData();
-                $amazonAdsThemeBasedBidRecommendationId = $amazonAdsThemeBasedBidRecommendationTable->save($dataThemeBasedBidRecommendation, false);
-                return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId,
-                    AmazonAdsSpTargetingTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID => $amazonAdsThemeBasedBidRecommendationId];
+                $countryCode = (new AmazonAdsProfileTable())->getCountryCode($profileId);
+
+                if(in_array($countryCode,ThemeBasedBidRecommendation::ALLOWED_PROFILE))
+                {
+                    $amazonAdsThemeBasedBidRecommendationTable = new AmazonAdsThemeBasedBidRecommendationTable();
+                    $targetingExpressionTypeKeyword = strtoupper(StringUtilities::changeChar($keyword,'-','_'));
+                    $dataThemeBasedBidRecommendation = $this->connection->themeBasedBidRecommendation($campaignId, $adGroupId, $targetingExpressionTypeKeyword)->prepareData();
+                    $amazonAdsThemeBasedBidRecommendationId = $amazonAdsThemeBasedBidRecommendationTable->save($dataThemeBasedBidRecommendation, false);
+                    return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId,
+                        AmazonAdsSpTargetingTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID => $amazonAdsThemeBasedBidRecommendationId];
+                }
+                else // ak niej v danej krajine podporované vratim prvé Id 1 z praznymi honotami
+                {
+                    return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId,
+                        AmazonAdsSpTargetingTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID => '1'];
+                }
             }
         }
         return array();

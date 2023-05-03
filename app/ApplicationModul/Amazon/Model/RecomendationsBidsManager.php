@@ -3,6 +3,7 @@
 namespace App\ApplicationModul\Amazon\Model;
 
 use AmazonAdvertisingApi\Connection\Connection;
+use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
 use AmazonAdvertisingApi\Table\AmazonAdsSpTargetingTable;
 use Exception;
 use Micho\Db;
@@ -34,7 +35,7 @@ class RecomendationsBidsManager
         set_time_limit(1000);
         foreach ($dataReportSuggestions as $suggestion)
         {
-            $suggestionData[] = $this->connection->report()->getBids($suggestion, $where[AmazonAdsSpTargetingTable::CAMPAIGN_ID],$where[AmazonAdsSpTargetingTable::AD_GROUP_ID]);
+            $suggestionData[] = $this->connection->report()->getBids($suggestion, $where[AmazonAdsSpTargetingTable::CAMPAIGN_ID],$where[AmazonAdsSpTargetingTable::AD_GROUP_ID], $where[AmazonAdsProfileTable::PROFILE_ID]);
         }
 
         if (isset($suggestionData))

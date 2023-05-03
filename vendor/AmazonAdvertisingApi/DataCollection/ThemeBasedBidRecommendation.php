@@ -42,6 +42,8 @@ class ThemeBasedBidRecommendation extends Request
         'adGroupId' => null
     ];
 
+    const ALLOWED_PROFILE = ['US', 'UK', 'DE', 'CA', 'JP', 'IN', 'ES', 'FR'];
+
     /**
      * Konštanty
      */
