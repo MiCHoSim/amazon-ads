@@ -18,6 +18,7 @@ use App\ApplicationModul\AppManagement\Model\AmazonAdsConfigTable;
 use App\ApplicationModul\AppManagement\Model\AmazonAdsRegionTable;
 use AmazonAdvertisingApi\Token\GenerateTokens;
 use Exception;
+use http\Env\Request;
 
 
 /**
@@ -249,6 +250,8 @@ class Connection
         $request->setOption(CURLOPT_HTTPHEADER, $headers);
         $request->setOption(CURLOPT_CUSTOMREQUEST, strtoupper($method));
 
+        $this->viewRequest($method, $url, $headers, $params,$request);
+
         return $this->_executeRequest($request);
     }
 
@@ -318,6 +321,19 @@ class Connection
                 $this->_logAndThrow("Unknown parameter '{$param}' in config.");
         }
         return true;
+    }
+
+    private function viewRequest($method, $url, $headers, $params, $request)
+    {
+        echo "curl --location --request " . $method . ' ' . $url;echo "<hr>";
+        foreach ($headers as $header)
+        {
+            echo "--header ";
+            echo($header);echo"<br>";
+        }
+        echo "<hr>--data-raw <br>";
+        print_r(json_encode($params));echo "<hr>";
+        echo $request->execute();echo"<hr>";
     }
 }
 
