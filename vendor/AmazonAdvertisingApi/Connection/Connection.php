@@ -250,7 +250,7 @@ class Connection
         $request->setOption(CURLOPT_HTTPHEADER, $headers);
         $request->setOption(CURLOPT_CUSTOMREQUEST, strtoupper($method));
 
-        $this->viewRequest($method, $url, $headers, $params,$request);
+        //$this->viewRequest($method, $url, $headers, $params,$request);
 
         return $this->_executeRequest($request);
     }
@@ -323,6 +323,15 @@ class Connection
         return true;
     }
 
+    /**
+     ** Zobrazí žiadosť do prehliadača
+     * @param $method
+     * @param $url
+     * @param $headers
+     * @param $params
+     * @param $request
+     * @return void
+     */
     private function viewRequest($method, $url, $headers, $params, $request)
     {
         echo "curl --location --request " . $method . ' ' . $url;echo "<hr>";
