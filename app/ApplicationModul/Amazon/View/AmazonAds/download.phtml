@@ -38,11 +38,13 @@ use Micho\Utilities\DateTimeUtilities;
         <h4><u>Downloaded dates</u></h4>
         <?php foreach ($dateSpTargSearch as $key => $spTypeData): ?>
             <strong><?= array_flip(ConstRaw::REPORT_TYPE_ID)[$key] ?></strong>
-            <?php foreach ($spTypeData as $date): ?>
-                <span class="btn btn-sm btn-success m-0">
+            <?php if (is_array($spTypeData)) : ?>
+                <?php foreach ($spTypeData as $date): ?>
+                    <span class="btn btn-sm btn-success m-0">
                     <?= DateTimeUtilities::formatToShape($date[SelectDateTable::SELECT_START_DATE],'j.m.y') ?>
                     -> <?= DateTimeUtilities::formatToShape($date[SelectDateTable::SELECT_END_DATE],'j.m.y') ?></span>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
             <hr>
         <?php endforeach; ?>
 
