@@ -9,6 +9,7 @@ use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
 use AmazonAdvertisingApi\Table\AmazonAdsSpSearchTermTable;
 use AmazonAdvertisingApi\Table\AmazonAdsSpTargetingTable;
 use AmazonAdvertisingApi\Table\Table;
+use App\AccountModul\Model\UserTable;
 use App\ApplicationModul\Amazon\Controller\AmazonMonthlySalesController;
 use App\BaseModul\System\Controller\Controller;
 use Matrix\Exception;
@@ -96,15 +97,23 @@ class AmazonManager
      * @param string $profileId Id profilu
      * @return array[]
      */
-    public function getDateSpTargSearch(string $userId, string $profileId) : array
+    public function getDateSpTargSearch(string $userId, string $profileId)
     {
+        $dateSpTargSearch = false;
         $amazonAdsSpTargetingTable = new AmazonAdsSpTargetingTable();
         $amazonAdsSpSearchTermTable = new AmazonAdsSpSearchTermTable();
 
         $targetingDates = $amazonAdsSpTargetingTable->getDownlaodingDates($userId, $profileId);
         $searchTermDates = $amazonAdsSpSearchTermTable->getDownlaodingDates($userId, $profileId);
 
-        return [ConstRawSpTargeting::REPORT_TYPE_ID => $targetingDates, ConstRawSpSearchTerm::REPORT_TYPE_ID => $searchTermDates];
+        if($targetingDates || $searchTermDates)
+        {
+            $dateSpTargSearch['dates'] = [ConstRawSpTargeting::REPORT_TYPE_ID => $targetingDates, ConstRawSpSearchTerm::REPORT_TYPE_ID => $searchTermDates];;
+            $dateSpTargSearch[AmazonAdsProfileTable::PROFILE_ID] = $profileId;
+            $dateSpTargSearch[UserTable::USER_ID] = $userId;
+        }
+
+        return $dateSpTargSearch;
     }
 
     private function view($data)

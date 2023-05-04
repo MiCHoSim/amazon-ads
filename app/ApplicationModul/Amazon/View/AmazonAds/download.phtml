@@ -3,6 +3,8 @@ use AmazonAdvertisingApi\Report\DataRaw;
 use AmazonAdvertisingApi\Report\ConstRaw;
 use AmazonAdvertisingApi\Table\SelectDateTable;
 use Micho\Utilities\DateTimeUtilities;
+use App\AccountModul\Model\UserTable;
+use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
 
 ?>
 
@@ -36,13 +38,20 @@ use Micho\Utilities\DateTimeUtilities;
 
         <hr>
         <h4><u>Downloaded dates</u></h4>
-        <?php foreach ($dateSpTargSearch as $key => $spTypeData): ?>
+        <?php foreach ($dateSpTargSearch['dates'] as $key => $spTypeData): ?>
             <strong><?= array_flip(ConstRaw::REPORT_TYPE_ID)[$key] ?></strong>
             <?php if (is_array($spTypeData)) : ?>
                 <?php foreach ($spTypeData as $date): ?>
-                    <span class="btn btn-sm btn-success m-0">
-                    <?= DateTimeUtilities::formatToShape($date[SelectDateTable::SELECT_START_DATE],'j.m.y') ?>
-                    -> <?= DateTimeUtilities::formatToShape($date[SelectDateTable::SELECT_END_DATE],'j.m.y') ?></span>
+                <?php $niceDate = DateTimeUtilities::formatToShape($date[SelectDateTable::SELECT_START_DATE],'j.m.y')
+                        . ' -> ' . DateTimeUtilities::formatToShape($date[SelectDateTable::SELECT_END_DATE],'j.m.y') ?>
+                    <span class="btn btn-sm btn-success m-0"><?= $niceDate ?>
+                        <?= DialogHelper::createDeleteDialog($date[SelectDateTable::SELECT_DATE_ID],
+                            'amazon-ads/delete-report/' . $key . '/' . $date[SelectDateTable::SELECT_DATE_ID] . '/' . $dateSpTargSearch[UserTable::USER_ID] . '/' . $dateSpTargSearch[AmazonAdsProfileTable::PROFILE_ID],
+                            'Do you really wish to delete the selected report? <span class="btn btn-sm btn-success m-0">' . $niceDate) . '</span>' ?>
+                    </span>
+
+
+
                 <?php endforeach; ?>
             <?php endif; ?>
             <hr>

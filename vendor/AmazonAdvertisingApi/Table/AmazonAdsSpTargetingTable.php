@@ -36,10 +36,10 @@ class AmazonAdsSpTargetingTable extends AmazonAdsSpTable
 
     const KEYWORD_ID = 'keyword_id';
     const TARGET_ID = 'target_id'; // Dorobiene kvoli tomu že v pripade že je to target smerovany inde tak ho rpesuniem tu a povodny dam NULL a by sa mi nebili FOREIGN KEY v DB
-// Dorobene kvoli bidom
-    const AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID = AmazonAdsThemeBasedBidRecommendationTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID;
-    const AMAZON_ADS_RECOMMENDATIONS_V2_ID = AmazonAdsBidRecommendationsV2Table::AMAZON_ADS_RECOMMENDATIONS_V2_ID;
-    const AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID = AmazonAdsKeywordRecommendationsTable::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID;
+// Dorobene kvoli bidom bidi som odstranil elbo sa uz tak nepouzivaju ale su iodkazovane bidi na target kvolu cascade delete
+    //const AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID = AmazonAdsThemeBasedBidRecommendationTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID;
+    //const AMAZON_ADS_RECOMMENDATIONS_V2_ID = AmazonAdsBidRecommendationsV2Table::AMAZON_ADS_RECOMMENDATIONS_V2_ID;
+    //const AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID = AmazonAdsKeywordRecommendationsTable::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID;
     const SUGEST_BID_LOW = 'sugested_bid_low';
     const SUGEST_BID_MEDIAN = 'sugested_bid_median';
     const SUGEST_BID_HIGH = 'sugested_bid_high';
@@ -107,9 +107,9 @@ class AmazonAdsSpTargetingTable extends AmazonAdsSpTable
     const KEYS = [
         self::AMAZON_ADS_SP_TARGETING_ID,self::SELECT_DATE_ID,self::TIME_UNIT_ID,self::USER_ID,self::PROFILE_ID,
         self::KEYWORD_ID,self::TARGET_ID,
-        self::PORTFOLIO_ID,self::CAMPAIGN_ID,self::AD_GROUP_ID,
-        self::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID,self::AMAZON_ADS_RECOMMENDATIONS_V2_ID,
-        self::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID];
+        self::PORTFOLIO_ID,self::CAMPAIGN_ID,self::AD_GROUP_ID];
+        //self::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID,self::AMAZON_ADS_RECOMMENDATIONS_V2_ID,
+        //self::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID];
 
     //vyber ktory je zaškrutnutý
     const CHECKED_COL = [
@@ -220,9 +220,9 @@ class AmazonAdsSpTargetingTable extends AmazonAdsSpTable
     protected $keywordId = null;
     protected $targetId = null;
 
-    protected $amazonAdsKeywordRecommendationsId = null;
-    protected $amazonAdsBidRecommendationsV2Id = null;
-    protected $amazonAdsThemeBasedBidRecommendationId = null;
+    //protected $amazonAdsKeywordRecommendationsId = null;
+    //protected $amazonAdsBidRecommendationsV2Id = null;
+    //protected $amazonAdsThemeBasedBidRecommendationId = null;
     protected $sugestedBidLow = null;
     protected $sugestedBidMedian = null;
     protected $sugestedBidHigh = null;

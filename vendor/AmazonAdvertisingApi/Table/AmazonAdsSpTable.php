@@ -125,7 +125,7 @@ abstract class AmazonAdsSpTable extends Table
      */
     public function getDownlaodingDates(string $userId, string $profileId)
     {
-        $keys = [SelectDateTable::SELECT_START_DATE, SelectDateTable::SELECT_END_DATE];
+        $keys = [SelectDateTable::SELECT_START_DATE, SelectDateTable::SELECT_END_DATE, self::SELECT_DATE_ID];
 
         $dates = Db::queryAllRows('
                 SELECT ' . implode(', ', $keys) . '

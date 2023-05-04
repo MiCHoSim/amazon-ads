@@ -24,6 +24,7 @@ class AmazonAdsKeywordRecommendationsTable extends Table
      * Konštanty Databázy
      */
     const AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID = 'amazon_ads_keyword_recommendations_id';
+    const AMAZON_ADS_SP_TARGETING_ID = AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID;
     const KEYWORD = 'keyword';
     const TRANSLATION = 'translation';
     const USER_SELECTED_KEYWORD = 'user_selected_keyword';
@@ -41,7 +42,7 @@ class AmazonAdsKeywordRecommendationsTable extends Table
     /**
      * @var array Kľuče databázi
      */
-    protected $keys = [self::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID,self::KEYWORD,self::TRANSLATION,
+    protected $keys = [self::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID, self::AMAZON_ADS_SP_TARGETING_ID,self::KEYWORD,self::TRANSLATION,
         self::USER_SELECTED_KEYWORD,self::SEARCH_TERM_IMPRESSION_RANK,self::SEARCH_TERM_IMPRESSION_SHARE,self::REC_ID,
         self::BID_INFO_ARRAY_MATCH_TYPE,self::BID_INFO_ARRAY_RANK,self::BID_INFO_ARRAY_BID,
         self::BID_INFO_ARRAY_SUGGESTED_BID_ARRAY_RANGE_START,self::BID_INFO_ARRAY_SUGGESTED_BID_ARRAY_RANGE_MEDIAN,
@@ -61,6 +62,7 @@ class AmazonAdsKeywordRecommendationsTable extends Table
      * @var null Atributy
      */
     protected $amazonAdsKeywordRecommendationsId = null;
+    protected $amazonAdsSpTargetingId = null;
     protected $keyword = null;
     protected $translation = null;
     protected $userSelectedKeyword = null;

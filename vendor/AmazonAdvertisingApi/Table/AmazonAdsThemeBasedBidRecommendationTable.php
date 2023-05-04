@@ -23,6 +23,7 @@ class AmazonAdsThemeBasedBidRecommendationTable extends Table
      * Konštanty Databázy
      */
     const AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID = 'amazon_ads_theme_based_bid_recommendation_id';
+    const AMAZON_ADS_SP_TARGETING_ID = AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID;
     const TARGETING_EXPRESION_ARRAY_TYPE = 'targeting_expression_array_type';
     const TARGETING_EXPRESION_ARRAY_VALUE = 'targeting_expression_array_value';
     const BID_VALUES_ARRAY_SUGGESTED_BID_LOW ='bid_values_array_low_array_suggested_bid';
@@ -32,7 +33,7 @@ class AmazonAdsThemeBasedBidRecommendationTable extends Table
     /**
      * @var array Kľuče databázi
      */
-    protected $keys = [self::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID,
+    protected $keys = [self::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID, self::AMAZON_ADS_SP_TARGETING_ID,
         self::TARGETING_EXPRESION_ARRAY_TYPE,self::TARGETING_EXPRESION_ARRAY_VALUE,
         self::BID_VALUES_ARRAY_SUGGESTED_BID_LOW,self::BID_VALUES_ARRAY_SUGGESTED_BID_MEDIAN,self::BID_VALUES_ARRAY_SUGGESTED_BID_HIGH];
 
@@ -50,6 +51,7 @@ class AmazonAdsThemeBasedBidRecommendationTable extends Table
      * @var null Atributy
      */
     protected $amazonAdsThemeBasedBidRecommendationId = null;
+    protected $amazonAdsSpTargetingId = null;
     protected $targetingExpressionArrayType = null;
     protected $targetingExpressionArrayValue = null;
     protected $bidValuesArrayLowArraySuggestedBid = null;

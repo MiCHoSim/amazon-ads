@@ -23,6 +23,7 @@ class AmazonAdsBidRecommendationsV2Table extends Table
      * Konštanty Databázy
      */
     const AMAZON_ADS_RECOMMENDATIONS_V2_ID = 'amazon_ads_bid_recommendations_v2_id';
+    const AMAZON_ADS_SP_TARGETING_ID = AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID;
     const RECOMMENDATIONS_ARRAY_SUGGESTED_BID_ARRAY_SUGGESTED = 'recommendations_array_suggested_bid_array_suggested';
     const RECOMMENDATIONS_ARRAY_SUGGESTED_BID_ARRAY_RANGE_START = 'recommendations_array_suggested_bid_array_range_start';
     const RECOMMENDATIONS_ARRAY_SUGGESTED_BID_ARRAY_RANGE_END ='recommendations_array_suggested_bid_array_range_end';
@@ -32,7 +33,7 @@ class AmazonAdsBidRecommendationsV2Table extends Table
     /**
      * @var array Kľuče databázi
      */
-    protected $keys = [self::AMAZON_ADS_RECOMMENDATIONS_V2_ID,self::RECOMMENDATIONS_ARRAY_SUGGESTED_BID_ARRAY_SUGGESTED,
+    protected $keys = [self::AMAZON_ADS_RECOMMENDATIONS_V2_ID, self::AMAZON_ADS_SP_TARGETING_ID,self::RECOMMENDATIONS_ARRAY_SUGGESTED_BID_ARRAY_SUGGESTED,
         self::RECOMMENDATIONS_ARRAY_SUGGESTED_BID_ARRAY_RANGE_START,self::RECOMMENDATIONS_ARRAY_SUGGESTED_BID_ARRAY_RANGE_END,
         self::RECOMMENDATIONS_ARRAY_EXPRESSION_ARRAY_VALUE,self::RECOMMENDATIONS_ARRAY_EXPRESSION_ARRAY_TYPE
     ];
@@ -50,6 +51,7 @@ class AmazonAdsBidRecommendationsV2Table extends Table
      * @var null Atributy
      */
     protected $amazonAdsBidRecommendationsV2Id = null;
+    protected $amazonAdsSpTargetingId = null;
     protected $recommendationsArraySuggestedBidArraySuggested = null;
     protected $recommendationsArraySuggestedBidArrayRangeStart = null;
     protected $recommendationsArraySuggestedBidArrayRangeEnd = null;

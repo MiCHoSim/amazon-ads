@@ -19,14 +19,14 @@ class DialogHelper
      * @param string $nazovTl Nazov Tlačidla v dialogu
      * @return string Html Kód Modálneho dialogu
      */
-    public static function createDeleteDialog($id, $url, $text, $tlacidlo = false, $nazovTl = 'Odstrániť')
+    public static function createDeleteDialog($id, $url, $text, $tlacidlo = false, $nazovTl = 'Delete')
     {
         if (!$tlacidlo)
         {
             $tlacidlo =
-                '<a href="#" data-toggle="modal" class="btn btn-light btn-sm border-dark kontrolka" data-target="#dialog_' . $id . '" title="Odstrániť">
+                '<button href="#" data-toggle="modal" class="btn btn-light btn-sm border-dark kontrolka  py-0 px-1" data-target="#dialog_' . $id . '" title="Delete">
                 <i class="fa fa-trash-alt"></i>
-             </a>';
+             </button>';
         }
 
         $dialog =
@@ -34,7 +34,7 @@ class DialogHelper
                 <div class="modal-dialog modal-sm" role="document">
                     <div class="modal-content border-info">
                         <div class="modal-header bg-info text-white pb-1">
-                            <h4 class="modal-title " id="dialog-label">Odstrániť</h4>
+                            <h4 class="modal-title " id="dialog-label">Delete</h4>
                             ' . ControlHelper::cancel('modal') . '
                         </div>
                         <div class="modal-body text-left text-dark">
@@ -42,11 +42,13 @@ class DialogHelper
                         </div>
                         <div class="modal-footer bg-info py-2">
                             <a href="' . $url . '" class="btn btn-warning text-white">' . $nazovTl . '</a>
-                            <button type="button" class="btn btn-info" data-dismiss="modal">Zavrieť</button>
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
-             </div>';
+             </div>
+             
+             <script>$("#dialog_' . $id . '").appendTo("body") </script>';//presun Do body lebo ho zobrazovalo šedé
 
         return $tlacidlo . $dialog;
     }

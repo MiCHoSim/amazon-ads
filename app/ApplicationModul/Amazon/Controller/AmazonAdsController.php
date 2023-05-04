@@ -7,9 +7,12 @@ use AmazonAdvertisingApi\Report\ConstRaw;
 use AmazonAdvertisingApi\Report\DataRaw;
 use AmazonAdvertisingApi\Report\ReportDictionary;
 use AmazonAdvertisingApi\Table\AmazonAdsAdGroupTable;
+use AmazonAdvertisingApi\Table\AmazonAdsBidRecommendationsV2Table;
 use AmazonAdvertisingApi\Table\AmazonAdsCampaignTable;
+use AmazonAdvertisingApi\Table\AmazonAdsKeywordRecommendationsTable;
 use AmazonAdvertisingApi\Table\AmazonAdsPortfolioTable;
 use AmazonAdvertisingApi\Table\AmazonAdsSpTargetingTable;
+use AmazonAdvertisingApi\Table\AmazonAdsThemeBasedBidRecommendationTable;
 use AmazonAdvertisingApi\Table\SelectDateTable;
 use AmazonAdvertisingApi\Table\TimeUnitTable;
 use App\AccountModul\Model\UserTable;
@@ -17,6 +20,7 @@ use App\ApplicationModul\Amazon\Model\AmazonManager;
 use App\ApplicationModul\Amazon\Model\RecomendationsBidsManager;
 use App\BaseModul\System\Controller\Controller;
 use App\BaseModul\System\Controller\RouterController;
+use Micho\Db;
 use Micho\Exception\SettingException;
 use Micho\Exception\ValidationException;
 use Micho\Form\Form;
@@ -27,6 +31,7 @@ use Exception;
 use Micho\Utilities\StringUtilities;
 use PDOException;
 use ErrorException;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx\Theme;
 
 /**
  * Trieda spracujúca Amazon Ads
@@ -279,12 +284,48 @@ class AmazonAdsController extends Controller
         }
     }
 
+    private function chengujTabulku($bidId, $bidTable)
+    {
+        $targetId = AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID;
+        $targetTable = AmazonAdsSpTargetingTable::TABLE;
+        $ids = Db::queryAllRows('SELECT ' . $bidId . '
+                        FROM ' . $bidTable);
+        foreach ($ids as $id)
+        {
+            $id = $id[$bidId];
+            $idTargs = Db::queryAllRows('SELECT ' . $targetId . '
+                        FROM ' . $targetTable . ' 
+                        WHERE ' . $bidId . ' = ? ', [$id]);
+            foreach ($idTargs as $idTarg)
+            {
+                $idTarg = $idTarg[$targetId];
+                Db::query('UPDATE ' . $bidTable . '
+                        SET ' . $targetId . ' = ? 
+                        WHERE ' . $bidId . ' = ? ', [$idTarg,$id]);
+            }
+        }
+    }
+
     /**
      * @return void
      * @Action
      */
     public function download($profileId = null, $reportId = null)
     {
+        $themeBidId = AmazonAdsThemeBasedBidRecommendationTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID;
+        $themeBidTable = AmazonAdsThemeBasedBidRecommendationTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_TABLE;
+
+        $keywordBidId = AmazonAdsKeywordRecommendationsTable::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID;
+        $keywordBidTable = AmazonAdsKeywordRecommendationsTable::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_TABLE;
+
+        $v2BidId = AmazonAdsBidRecommendationsV2Table::AMAZON_ADS_RECOMMENDATIONS_V2_ID;
+        $v2BidTable = AmazonAdsBidRecommendationsV2Table::AMAZON_ADS_RECOMMENDATIONS_V2_TABLE;
+/*
+        $this->chengujTabulku($themeBidId, $themeBidTable);
+        $this->chengujTabulku($keywordBidId, $keywordBidTable);
+        $this->chengujTabulku($v2BidId, $v2BidTable);
+*/
+
         $this->amazonManager->basicTemplateSetings($profileId);
 
         // nastavenia pre tlacidla
@@ -373,6 +414,8 @@ class AmazonAdsController extends Controller
 
         $this->data['dateSpTargSearch'] = $this->amazonManager->getDateSpTargSearch($this->userId, $this->connection->profileId);
 
+        //print_r($this->data['dateSpTargSearch']);
+
         $this->data['reportId'] = $reportId;
         $this->data['profileId'] = $this->connection->profileId;
         $this->data['currentUrl'] = self::$currentUrl;
@@ -403,6 +446,7 @@ class AmazonAdsController extends Controller
         }
         catch (PDOException $error)
         {
+            //echo  $error->getMessage();die;
             //$this->addMessage('Error saving to database.: ' . $error->getMessage(),self::MSG_ERROR);
             $this->addMessage('Error saving to database.: probably need to restore all the basic settings',self::MSG_ERROR);
             $this->redirect('app-management/settings');
@@ -412,6 +456,26 @@ class AmazonAdsController extends Controller
             $this->addMessage($error->getMessage(),self::MSG_ERROR);
         }
         $this->redirect('amazon-ads/download/' . $profileId);
+    }
+
+    /**
+     * @Action
+     */
+    public function deleteReport($reportTypeId, $selectDateId, $userId, $profileId)
+    {
+
+        try
+        {
+            $this->connection->report()->deleteReport($reportTypeId, $selectDateId, $userId, $profileId);
+            $this->addMessage('Report has been removed',self::MSG_SUCCESS);
+        }
+        catch (PDOException $error)
+        {
+            //$this->addMessage('Error saving to database.: ' . $error->getMessage(),self::MSG_ERROR);
+            $this->addMessage('Error saving to database.: probably need to restore all the basic settings',self::MSG_ERROR);
+            //$this->redirect('app-management/settings');
+        }
+        //$this->redirect('amazon-ads/download/' . $profileId);
     }
 
     static function view($data)

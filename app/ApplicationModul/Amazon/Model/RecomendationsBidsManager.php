@@ -31,7 +31,9 @@ class RecomendationsBidsManager
      */
     public function downloadBids(array $where) : void
     {
+
         $dataReportSuggestions = $this->getDataForSuggestionBids($where);
+
         set_time_limit(1000);
         foreach ($dataReportSuggestions as $suggestion)
         {
@@ -56,7 +58,7 @@ class RecomendationsBidsManager
 
         $selectQuery = 'SELECT ' . implode(', ', $keys);
         $fromQuery = ' FROM ' . AmazonAdsSpTargetingTable::TABLE;
-
+tfdf
         $whereQuery = ' WHERE ' . implode(' = ? AND ',$whereKeys) . ' = ? 
                 AND ' . AmazonAdsSpTargetingTable::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID . ' IS NULL 
                 AND ' . AmazonAdsSpTargetingTable::AMAZON_ADS_RECOMMENDATIONS_V2_ID . ' IS NULL 
