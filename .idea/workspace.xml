@@ -74,7 +74,7 @@
       <workItem from="1681212487716" duration="618000" />
       <workItem from="1681217811186" duration="70872000" />
       <workItem from="1683122769831" duration="743000" />
-      <workItem from="1683142821823" duration="28992000" />
+      <workItem from="1683142821823" duration="36293000" />
     </task>
     <task id="LOCAL-00001" summary="pridanie nacitavania pre mothkyl sales  vsetky krajiny">
       <created>1681488968701</created>
@@ -132,7 +132,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683206416984</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Dorobena uprava Transformácie a tabuliek a nacitanie Bidouv pri stiahnutí reportu">
+      <created>1683225622934</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1683225622934</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -173,6 +180,7 @@
     <MESSAGE value="Uprava Vypisu Ziadosty" />
     <MESSAGE value="Uprava DB" />
     <MESSAGE value="Rozpracované úpravy pre vymazovanie ale aj uprava tabulieka  bidov" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rozpracované úpravy pre vymazovanie ale aj uprava tabulieka  bidov" />
+    <MESSAGE value="Dorobena uprava Transformácie a tabuliek a nacitanie Bidouv pri stiahnutí reportu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dorobena uprava Transformácie a tabuliek a nacitanie Bidouv pri stiahnutí reportu" />
   </component>
 </project>

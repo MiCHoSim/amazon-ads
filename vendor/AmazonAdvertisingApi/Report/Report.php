@@ -433,19 +433,10 @@ class Report
     {
         $table = new ('AmazonAdvertisingApi\\Table\\AmazonAds' . StringUtilities::firstBig($reportTypeId) . 'Table')();
 
-        echo 'DELETE FROM ' . $table::TABLE . ' WHERE ' . $table::SELECT_DATE_ID . ' = ? AND ' . $table::USER_ID . ' = ? AND ' . $table::PROFILE_ID . ' = ?';echo "<hr>";
-
-        //Db::queryAlone()
-
-        //Db::query('DELETE FROM clanok WHERE url = ?', [$selectDateId,$userId,$profileId]);
-        echo $table::TABLE;echo "<hr>";
-        echo $selectDateId;echo "<hr>";
-        echo $userId;echo "<hr>";
-        echo $profileId;echo "<hr>";
-
-        echo "dnu som celkom";
-        //
-
+        Db::query('DELETE FROM ' . $table::TABLE . ' 
+                WHERE ' . $table::SELECT_DATE_ID . ' = ? 
+                    AND ' . $table::USER_ID . ' = ? 
+                        AND ' . $table::PROFILE_ID . ' = ?', [$selectDateId,$userId,$profileId]);
     }
 
 

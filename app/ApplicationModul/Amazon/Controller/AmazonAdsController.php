@@ -407,7 +407,7 @@ class AmazonAdsController extends Controller
 
         $this->data['dateSpTargSearch'] = $this->amazonManager->getDateSpTargSearch($this->userId, $this->connection->profileId);
 
-        //print_r($this->data['dateSpTargSearch']);
+        //AmazonAdsController::view($this->data['dateSpTargSearch']);
 
         $this->data['reportId'] = $reportId;
         $this->data['profileId'] = $this->connection->profileId;
@@ -457,7 +457,6 @@ class AmazonAdsController extends Controller
      */
     public function deleteReport($reportTypeId, $selectDateId, $userId, $profileId)
     {
-
         try
         {
             $this->connection->report()->deleteReport($reportTypeId, $selectDateId, $userId, $profileId);
@@ -465,11 +464,10 @@ class AmazonAdsController extends Controller
         }
         catch (PDOException $error)
         {
-            //$this->addMessage('Error saving to database.: ' . $error->getMessage(),self::MSG_ERROR);
-            $this->addMessage('Error saving to database.: probably need to restore all the basic settings',self::MSG_ERROR);
-            //$this->redirect('app-management/settings');
+            echo $error->getMessage();die;
+            $this->addMessage('Error Deleting',self::MSG_ERROR);
         }
-        //$this->redirect('amazon-ads/download/' . $profileId);
+        $this->redirect('amazon-ads/download/' . $profileId);
     }
 
     static function view($data)
