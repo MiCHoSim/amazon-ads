@@ -5,6 +5,7 @@ namespace App\ApplicationModul\Amazon\Model;
 use AmazonAdvertisingApi\Connection\Connection;
 use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
 use AmazonAdvertisingApi\Table\AmazonAdsSpTargetingTable;
+use App\ApplicationModul\Amazon\Controller\AmazonAdsController;
 use Exception;
 use Micho\Db;
 
@@ -31,38 +32,37 @@ class RecomendationsBidsManager
      */
     public function downloadBids(array $where) : void
     {
+        $keys = [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID,AmazonAdsSpTargetingTable::KEYWORD, AmazonAdsSpTargetingTable::MATCH_TYPE, AmazonAdsSpTargetingTable::CAMPAIGN_ID,AmazonAdsSpTargetingTable::AD_GROUP_ID,AmazonAdsProfileTable::PROFILE_ID];
 
-        $dataReportSuggestions = $this->getDataForSuggestionBids($where);
+        $dataReportSuggestions = $this->getDataForSuggestionBids($where, $keys);
 
         set_time_limit(1000);
         foreach ($dataReportSuggestions as $suggestion)
         {
-            $suggestionData[] = $this->connection->report()->getBids($suggestion, $where[AmazonAdsSpTargetingTable::CAMPAIGN_ID],$where[AmazonAdsSpTargetingTable::AD_GROUP_ID], $where[AmazonAdsProfileTable::PROFILE_ID]);
+            $this->connection->report()->getBids($suggestion);
         }
-
+        /*
         if (isset($suggestionData))
             ( new AmazonAdsSpTargetingTable())->save($suggestionData);
+        */
     }
 
     /**
      ** Načíta data pre potrebi stiahnuťia bidu z Amazon
      * @param array $where Pole podmienky
+     * @param array $keys Kluice ktore chem stahovať
      * @return mixed
      */
-    public function getDataForSuggestionBids(array $where) : mixed
+    public function getDataForSuggestionBids(array $where, array $keys) : mixed
     {
-        $keys = [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID,AmazonAdsSpTargetingTable::KEYWORD, AmazonAdsSpTargetingTable::MATCH_TYPE];
 
         $whereKeys = array_keys($where);
         $whereValues = array_values($where);
 
         $selectQuery = 'SELECT ' . implode(', ', $keys);
         $fromQuery = ' FROM ' . AmazonAdsSpTargetingTable::TABLE;
-tfdf
-        $whereQuery = ' WHERE ' . implode(' = ? AND ',$whereKeys) . ' = ? 
-                AND ' . AmazonAdsSpTargetingTable::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID . ' IS NULL 
-                AND ' . AmazonAdsSpTargetingTable::AMAZON_ADS_RECOMMENDATIONS_V2_ID . ' IS NULL 
-                AND ' . AmazonAdsSpTargetingTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID . ' IS NULL';
+
+        $whereQuery = ' WHERE ' . implode(' = ? AND ',$whereKeys) . ' = ? ';
 
         return Db::queryAllRows($selectQuery . $fromQuery . $whereQuery,$whereValues);
     }

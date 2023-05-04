@@ -106,9 +106,9 @@ class AmazonManager
         $targetingDates = $amazonAdsSpTargetingTable->getDownlaodingDates($userId, $profileId);
         $searchTermDates = $amazonAdsSpSearchTermTable->getDownlaodingDates($userId, $profileId);
 
+        $dateSpTargSearch['dates'] = [ConstRawSpTargeting::REPORT_TYPE_ID => $targetingDates, ConstRawSpSearchTerm::REPORT_TYPE_ID => $searchTermDates];
         if($targetingDates || $searchTermDates)
         {
-            $dateSpTargSearch['dates'] = [ConstRawSpTargeting::REPORT_TYPE_ID => $targetingDates, ConstRawSpSearchTerm::REPORT_TYPE_ID => $searchTermDates];;
             $dateSpTargSearch[AmazonAdsProfileTable::PROFILE_ID] = $profileId;
             $dateSpTargSearch[UserTable::USER_ID] = $userId;
         }

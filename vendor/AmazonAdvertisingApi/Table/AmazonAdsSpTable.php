@@ -30,11 +30,6 @@ abstract class AmazonAdsSpTable extends Table
     }
 
     /**
-     *
-     * @param string $id
-     * @return mixed
-     */
-    /**
      ** Načita data z DB
      * @param array $where Pole podmienky where
      * @param array $keys kluče ktore načitávam
@@ -98,7 +93,6 @@ abstract class AmazonAdsSpTable extends Table
         AmazonAdsController::view($data);echo "<br><br>";
         AmazonAdsController::view($vystup);
 */
-
         return $vystup;
     }
 

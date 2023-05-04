@@ -110,14 +110,7 @@ class AmazonAdsController extends Controller
             $reports = array();
             try
             {
-                // ak Mam tabulku targeting tak k nej pridavam aj suggestion bid
-                if ($this->reportTable instanceof AmazonAdsSpTargetingTable && empty($keyword))
-                {
-                    $recomendationsBidsManager = new RecomendationsBidsManager($this->connection);
-                    $recomendationsBidsManager->downloadBids($where);
-                }
                 $reports =  $this->reportTable->getReports($where, array_keys($selectCol));
-
             }
             catch (Exception $error)
             {
@@ -443,6 +436,7 @@ class AmazonAdsController extends Controller
             $this->connection->report()->save();
 
             $this->addMessage('Reports data have been saved in the Database',self::MSG_SUCCESS);
+            //$this->addMessage('Bids have been successfully downloaded and saved',self::MSG_SUCCESS);
         }
         catch (PDOException $error)
         {
@@ -485,7 +479,7 @@ class AmazonAdsController extends Controller
         {
             echo $i . ' : ';
             echo $key . ' -> ';
-            print_r($d);echo "<br><br><br>";
+            print_r($d);echo "<hr>";
             $i++;
         }
     }

@@ -74,7 +74,7 @@
       <workItem from="1681212487716" duration="618000" />
       <workItem from="1681217811186" duration="70872000" />
       <workItem from="1683122769831" duration="743000" />
-      <workItem from="1683142821823" duration="16790000" />
+      <workItem from="1683142821823" duration="28992000" />
     </task>
     <task id="LOCAL-00001" summary="pridanie nacitavania pre mothkyl sales  vsetky krajiny">
       <created>1681488968701</created>
@@ -125,7 +125,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683120235886</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Rozpracované úpravy pre vymazovanie ale aj uprava tabulieka  bidov">
+      <created>1683206416984</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1683206416984</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,6 +172,7 @@
     <MESSAGE value="Oprava chýby stahovania ThemeBasedBidRecommendation z dovvodu ze nieje podporované v danej krajine" />
     <MESSAGE value="Uprava Vypisu Ziadosty" />
     <MESSAGE value="Uprava DB" />
-    <option name="LAST_COMMIT_MESSAGE" value="Uprava DB" />
+    <MESSAGE value="Rozpracované úpravy pre vymazovanie ale aj uprava tabulieka  bidov" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rozpracované úpravy pre vymazovanie ale aj uprava tabulieka  bidov" />
   </component>
 </project>

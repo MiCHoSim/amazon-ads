@@ -16,6 +16,7 @@ use AmazonAdvertisingApi\Table\TimeUnitTable;
 use App\AccountModul\Model\UserTable;
 use App\ApplicationModul\Amazon\Controller\AmazonAdsController;
 use App\ApplicationModul\Amazon\Model\AmazonMonthlySalesTable;
+use App\ApplicationModul\Amazon\Model\RecomendationsBidsManager;
 use App\BaseModul\System\Controller\Controller;
 use http\Env\Response;
 use Micho\Db;
@@ -310,6 +311,13 @@ class Report
 
         $this->savingTable->save($data);
 
+        // ak Mam tabulku targeting tak k nej stahujem aj suggestion bid
+        if ($this->savingTable instanceof AmazonAdsSpTargetingTable)
+        {
+            $where = [UserTable::USER_ID => $this->connection->amazonAdsConfigTable->getUserId(), AmazonAdsProfileTable::PROFILE_ID => $this->connection->profileId, SelectDateTable::SELECT_DATE_ID => $selectDateId];
+            $recomendationsBidsManager = new RecomendationsBidsManager($this->connection);
+            $recomendationsBidsManager->downloadBids($where);
+        }
         $this->delete();
     }
 
@@ -365,26 +373,27 @@ class Report
     /**
      ** získa a uloži bidi
      * @param array $bidData Data potrebné pre stahovanie budov
-     * @param string $campaignId Id kampane
-     * @param string $adGroupId id reklamnej skupiny
-     * @param string $profileId Id profilo poŽadované len pre ThemeBidReco... pre rohodntie ci podporuje
-     * @return array polé dát pre priradenie do reportu
      * @throws Exception
      */
-    public function getBids(array $bidData, string $campaignId, string $adGroupId, $profileId = null) : array //string $campaignId, string $adGroupId, string $matchType, string $keyword
+    public function getBids(array $bidData) //: array
     {
         $amazonAdsSpTargetingId = $bidData[AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID];
         $keyword = $bidData[AmazonAdsSpTargetingTable::KEYWORD];
         $matchType = $bidData[AmazonAdsSpTargetingTable::MATCH_TYPE];
+        $campaignId = $bidData[AmazonAdsSpTargetingTable::CAMPAIGN_ID];
+        $adGroupId = $bidData[AmazonAdsSpTargetingTable::AD_GROUP_ID];
+        $profileId = $bidData[AmazonAdsProfileTable::PROFILE_ID];
 
         // rozhodujem akym sposobom budem načitavaŤ bidy
         if(in_array($matchType, KeywordRecommendations::MATCH_TYPE_OPTIONS))
         {
             $amazonAdsKeywordRecommendationsTable = new AmazonAdsKeywordRecommendationsTable();
             $dataKeywordRecommendations = $this->connection->keywordRecommendations($campaignId,$adGroupId, $matchType,$keyword)->prepareData();
-            $amazonAdsKeywordRecommendationsId = $amazonAdsKeywordRecommendationsTable->save($dataKeywordRecommendations, false);
-            return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId,
-                AmazonAdsSpTargetingTable::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID => $amazonAdsKeywordRecommendationsId];
+            $dataKeywordRecommendations[0][AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID] = $amazonAdsSpTargetingId;
+            //AmazonAdsController::view($dataKeywordRecommendations);
+            $amazonAdsKeywordRecommendationsTable->save($dataKeywordRecommendations);
+            //return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId,
+                //AmazonAdsKeywordRecommendationsTable::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID => $amazonAdsKeywordRecommendationsId];
         }
         else
         {
@@ -395,9 +404,11 @@ class Report
                 $type = explode('-',$keyword[0])[0];
                 $value = StringUtilities::returnStringBetween($keyword[1],'"','"');
                 $dataBidRecommendationsV2 = $this->connection->BidRecommendationsV2($adGroupId, $value, $type)->prepareData();
-                $amazonAdsBidRecommendationsV2Id = $amazonAdsBidRecommendationsV2Table->save($dataBidRecommendationsV2, false);
-                return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId,
-                    AmazonAdsSpTargetingTable::AMAZON_ADS_RECOMMENDATIONS_V2_ID => $amazonAdsBidRecommendationsV2Id];
+                $dataBidRecommendationsV2[0][AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID] = $amazonAdsSpTargetingId;
+                //AmazonAdsController::view($dataBidRecommendationsV2);
+                $amazonAdsBidRecommendationsV2Table->save($dataBidRecommendationsV2);
+                //return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId,
+                    //AmazonAdsBidRecommendationsV2Table::AMAZON_ADS_RECOMMENDATIONS_V2_ID => $amazonAdsBidRecommendationsV2Id];
             }
             elseif (in_array($matchType, ThemeBasedBidRecommendation::MATCH_TYPE_OPTIONS))
             {
@@ -408,24 +419,19 @@ class Report
                     $amazonAdsThemeBasedBidRecommendationTable = new AmazonAdsThemeBasedBidRecommendationTable();
                     $targetingExpressionTypeKeyword = strtoupper(StringUtilities::changeChar($keyword,'-','_'));
                     $dataThemeBasedBidRecommendation = $this->connection->themeBasedBidRecommendation($campaignId, $adGroupId, $targetingExpressionTypeKeyword)->prepareData();
-                    $amazonAdsThemeBasedBidRecommendationId = $amazonAdsThemeBasedBidRecommendationTable->save($dataThemeBasedBidRecommendation, false);
-                    return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId,
-                        AmazonAdsSpTargetingTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID => $amazonAdsThemeBasedBidRecommendationId];
-                }
-                else // ak niej v danej krajine podporované vratim prvé Id 1 z praznymi honotami
-                {
-                    return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId,
-                        AmazonAdsSpTargetingTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID => '1'];
+                    $dataThemeBasedBidRecommendation[0][AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID] = $amazonAdsSpTargetingId;
+                    //AmazonAdsController::view($dataThemeBasedBidRecommendation);
+                    $amazonAdsThemeBasedBidRecommendationTable->save($dataThemeBasedBidRecommendation, false);
+                    //return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId,
+                       // AmazonAdsThemeBasedBidRecommendationTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID => $amazonAdsThemeBasedBidRecommendationId];
                 }
             }
         }
-        return array();
     }
 
     public function deleteReport(string $reportTypeId, string $selectDateId, string $userId, string $profileId)
     {
         $table = new ('AmazonAdvertisingApi\\Table\\AmazonAds' . StringUtilities::firstBig($reportTypeId) . 'Table')();
-
 
         echo 'DELETE FROM ' . $table::TABLE . ' WHERE ' . $table::SELECT_DATE_ID . ' = ? AND ' . $table::USER_ID . ' = ? AND ' . $table::PROFILE_ID . ' = ?';echo "<hr>";
 
@@ -439,8 +445,6 @@ class Report
 
         echo "dnu som celkom";
         //
-
-
 
     }
 

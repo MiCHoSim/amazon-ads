@@ -301,11 +301,11 @@ class AmazonAdsSpTargetingTable extends AmazonAdsSpTable
     public function prepareJoins()
     {
         $joinQuery = ' LEFT JOIN ' . AmazonAdsThemeBasedBidRecommendationTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_TABLE . ' 
-                       USING (' . $this::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID . ')';
+                       USING (' . self::AMAZON_ADS_SP_TARGETING_ID . ')';
         $joinQuery .= ' LEFT JOIN ' . AmazonAdsBidRecommendationsV2Table::AMAZON_ADS_RECOMMENDATIONS_V2_TABLE . ' 
-                        USING (' . $this::AMAZON_ADS_RECOMMENDATIONS_V2_ID . ')';
+                        USING (' . self::AMAZON_ADS_SP_TARGETING_ID . ')';
         $joinQuery .= ' LEFT JOIN ' . AmazonAdsKeywordRecommendationsTable::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_TABLE . '
-                        USING (' . $this::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID . ')';
+                        USING (' . self::AMAZON_ADS_SP_TARGETING_ID . ')';
 
         return $joinQuery;
     }
