@@ -30,6 +30,8 @@ class AmazonAdsSpTargetingTable extends AmazonAdsSpTable
      */
     const AMAZON_ADS_SP_TARGETING_ID = 'amazon_ads_sp_targeting_id';
 
+    const BID = 'bid'; // či už boli stahovené bidy
+
     const PORTFOLIO_ID = 'portfolio_id';
     const CAMPAIGN_ID = 'campaign_id';
     const AD_GROUP_ID = 'ad_group_id';
@@ -106,7 +108,7 @@ class AmazonAdsSpTargetingTable extends AmazonAdsSpTable
     // Ostatné kluče
     const KEYS = [
         self::AMAZON_ADS_SP_TARGETING_ID,self::SELECT_DATE_ID,self::TIME_UNIT_ID,self::USER_ID,self::PROFILE_ID,
-        self::KEYWORD_ID,self::TARGET_ID,
+        self::KEYWORD_ID,self::TARGET_ID,self::BID,
         self::PORTFOLIO_ID,self::CAMPAIGN_ID,self::AD_GROUP_ID];
         //self::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID,self::AMAZON_ADS_RECOMMENDATIONS_V2_ID,
         //self::AMAZON_ADS_KEYWORD_RECOMMENDATIONS_ID];
@@ -174,6 +176,7 @@ class AmazonAdsSpTargetingTable extends AmazonAdsSpTable
      * @var null Atributy
      */
     protected $amazonAdsSpTargetingId = null;
+    protected $bid = null;
     protected $selectDateId = null;
     protected $timeUnitId = null;
     protected $date = null;

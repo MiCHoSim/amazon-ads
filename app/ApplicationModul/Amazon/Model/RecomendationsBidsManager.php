@@ -34,17 +34,21 @@ class RecomendationsBidsManager
     {
         $keys = [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID,AmazonAdsSpTargetingTable::KEYWORD, AmazonAdsSpTargetingTable::MATCH_TYPE, AmazonAdsSpTargetingTable::CAMPAIGN_ID,AmazonAdsSpTargetingTable::AD_GROUP_ID,AmazonAdsProfileTable::PROFILE_ID];
 
+        $where[AmazonAdsSpTargetingTable::BID] = 0;
+
         $dataReportSuggestions = $this->getDataForSuggestionBids($where, $keys);
+
+        //print_r($dataReportSuggestions);die;
 
         set_time_limit(1000);
         foreach ($dataReportSuggestions as $suggestion)
-        {
-            $this->connection->report()->getBids($suggestion);
+        {//echo '$stahuje' ; die;
+            $suggestionData[] = $this->connection->report()->getBids($suggestion);
         }
-        /*
+
         if (isset($suggestionData))
             ( new AmazonAdsSpTargetingTable())->save($suggestionData);
-        */
+
     }
 
     /**

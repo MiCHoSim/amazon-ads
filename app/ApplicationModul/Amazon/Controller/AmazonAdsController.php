@@ -110,6 +110,12 @@ class AmazonAdsController extends Controller
             $reports = array();
             try
             {
+                // ak Mam tabulku targeting tak k nej pridavam aj suggestion bid
+                if ($this->reportTable instanceof AmazonAdsSpTargetingTable && empty($keyword))
+                {
+                    $recomendationsBidsManager = new RecomendationsBidsManager($this->connection);
+                    $recomendationsBidsManager->downloadBids($where);
+                }
                 $reports =  $this->reportTable->getReports($where, array_keys($selectCol));
             }
             catch (Exception $error)
@@ -305,7 +311,8 @@ class AmazonAdsController extends Controller
      */
     public function download($profileId = null, $reportId = null)
     {
-        /* kvoli transformacii DB
+/*
+        //kvoli transformacii DB
         $themeBidId = AmazonAdsThemeBasedBidRecommendationTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID;
         $themeBidTable = AmazonAdsThemeBasedBidRecommendationTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_TABLE;
 
@@ -315,10 +322,31 @@ class AmazonAdsController extends Controller
         $v2BidId = AmazonAdsBidRecommendationsV2Table::AMAZON_ADS_RECOMMENDATIONS_V2_ID;
         $v2BidTable = AmazonAdsBidRecommendationsV2Table::AMAZON_ADS_RECOMMENDATIONS_V2_TABLE;
 
+
+
         $this->chengujTabulku($themeBidId, $themeBidTable);
         $this->chengujTabulku($keywordBidId, $keywordBidTable);
         $this->chengujTabulku($v2BidId, $v2BidTable);
+
+
+        $targetId = AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID;
+        $targetTable = AmazonAdsSpTargetingTable::TABLE;
+        $dataTheme = Db::queryAllRows('SELECT ' . $targetId . ' FROM ' . $themeBidTable);
+        $dataKeyword = Db::queryAllRows('SELECT ' . $targetId . ' FROM ' . $keywordBidTable);
+        $dataV2 = Db::queryAllRows('SELECT ' . $targetId . ' FROM ' . $v2BidTable);
+
+        $datasky = array_merge($dataTheme,$dataKeyword,$dataV2);
+
+        foreach ($datasky as $datask)
+        {
+            $datask = $datask[$targetId];
+            Db::query('UPDATE ' . $targetTable . '
+                        SET ' . AmazonAdsSpTargetingTable::BID . ' = 1 
+                        WHERE ' . $targetId . ' = ? ', [$datask]);
+        }
 */
+        //AmazonAdsController::view($datasky);die;
+
 
         $this->amazonManager->basicTemplateSetings($profileId);
 

@@ -74,7 +74,7 @@
       <workItem from="1681212487716" duration="618000" />
       <workItem from="1681217811186" duration="70872000" />
       <workItem from="1683122769831" duration="743000" />
-      <workItem from="1683142821823" duration="36293000" />
+      <workItem from="1683142821823" duration="45837000" />
     </task>
     <task id="LOCAL-00001" summary="pridanie nacitavania pre mothkyl sales  vsetky krajiny">
       <created>1681488968701</created>
@@ -139,7 +139,28 @@
       <option name="project" value="LOCAL" />
       <updated>1683225622934</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Dorobenie vymarovania reportov, pricom sa automaticky vymazuju aj bidi">
+      <created>1683236160791</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1683236160792</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Uprava instrukcii">
+      <created>1683268627413</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1683268627413</updated>
+    </task>
+    <task id="LOCAL-00012" summary="zakomentovanie transformacie">
+      <created>1683269296279</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1683269296279</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -181,6 +202,9 @@
     <MESSAGE value="Uprava DB" />
     <MESSAGE value="Rozpracované úpravy pre vymazovanie ale aj uprava tabulieka  bidov" />
     <MESSAGE value="Dorobena uprava Transformácie a tabuliek a nacitanie Bidouv pri stiahnutí reportu" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dorobena uprava Transformácie a tabuliek a nacitanie Bidouv pri stiahnutí reportu" />
+    <MESSAGE value="Dorobenie vymarovania reportov, pricom sa automaticky vymazuju aj bidi" />
+    <MESSAGE value="Uprava instrukcii" />
+    <MESSAGE value="zakomentovanie transformacie" />
+    <option name="LAST_COMMIT_MESSAGE" value="zakomentovanie transformacie" />
   </component>
 </project>

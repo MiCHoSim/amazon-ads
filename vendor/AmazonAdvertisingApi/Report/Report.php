@@ -311,13 +311,6 @@ class Report
 
         $this->savingTable->save($data);
 
-        // ak Mam tabulku targeting tak k nej stahujem aj suggestion bid
-        if ($this->savingTable instanceof AmazonAdsSpTargetingTable)
-        {
-            $where = [UserTable::USER_ID => $this->connection->amazonAdsConfigTable->getUserId(), AmazonAdsProfileTable::PROFILE_ID => $this->connection->profileId, SelectDateTable::SELECT_DATE_ID => $selectDateId];
-            $recomendationsBidsManager = new RecomendationsBidsManager($this->connection);
-            $recomendationsBidsManager->downloadBids($where);
-        }
         $this->delete();
     }
 
@@ -427,6 +420,7 @@ class Report
                 }
             }
         }
+        return [AmazonAdsSpTargetingTable::AMAZON_ADS_SP_TARGETING_ID => $amazonAdsSpTargetingId, AmazonAdsSpTargetingTable::BID => 1];
     }
 
     public function deleteReport(string $reportTypeId, string $selectDateId, string $userId, string $profileId)
