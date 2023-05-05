@@ -21,13 +21,10 @@ ALTER TABLE amazon_ads_bid_recommendations_v2
             REFERENCES amazon_ads_sp_targeting (amazon_ads_sp_targeting_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- spustit SQL na prehodenie
-
-
+-- spustit SQL na prehodenie:
+--amazon-ads/download/4334717172873825
 
 -- spustit ostatne
-
-
 ALTER TABLE amazon_ads_sp_targeting DROP FOREIGN KEY amazon_ads_sp_targeting_10;
 ALTER TABLE amazon_ads_sp_targeting DROP FOREIGN KEY amazon_ads_sp_targeting_11;
 ALTER TABLE amazon_ads_sp_targeting DROP FOREIGN KEY amazon_ads_sp_targeting_12;
