@@ -305,6 +305,7 @@ class AmazonAdsController extends Controller
      */
     public function download($profileId = null, $reportId = null)
     {
+        /* kvoli transformacii DB
         $themeBidId = AmazonAdsThemeBasedBidRecommendationTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_ID;
         $themeBidTable = AmazonAdsThemeBasedBidRecommendationTable::AMAZON_ADS_THEME_BASED_BID_RECOMMENDATION_TABLE;
 
@@ -313,7 +314,7 @@ class AmazonAdsController extends Controller
 
         $v2BidId = AmazonAdsBidRecommendationsV2Table::AMAZON_ADS_RECOMMENDATIONS_V2_ID;
         $v2BidTable = AmazonAdsBidRecommendationsV2Table::AMAZON_ADS_RECOMMENDATIONS_V2_TABLE;
-/*
+
         $this->chengujTabulku($themeBidId, $themeBidTable);
         $this->chengujTabulku($keywordBidId, $keywordBidTable);
         $this->chengujTabulku($v2BidId, $v2BidTable);
