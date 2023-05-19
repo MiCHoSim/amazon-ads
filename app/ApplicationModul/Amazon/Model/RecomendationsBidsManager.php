@@ -42,7 +42,7 @@ class RecomendationsBidsManager
 
         set_time_limit(1000);
         foreach ($dataReportSuggestions as $suggestion)
-        {//echo '$stahuje' ; die;
+        {
             $suggestionData[] = $this->connection->report()->getBids($suggestion);
         }
 

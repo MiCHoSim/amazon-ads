@@ -19,14 +19,13 @@ ALTER TABLE amazon_ads_bid_recommendations_v2
     ADD CONSTRAINT amazon_ads_bid_recommendations_v2_1
         FOREIGN KEY (amazon_ads_sp_targeting_id)
             REFERENCES amazon_ads_sp_targeting (amazon_ads_sp_targeting_id) ON UPDATE CASCADE ON DELETE CASCADE;
-ALTER TABLE `amazon_ads_sp_targeting` ADD `bid` TINYINT(1) NOT NULL DEFAULT '0' AFTER `amazon_ads_sp_targeting_id`;
 
 
 -- spustit SQL na prehodenie:
 --amazon-ads/download/4334717172873825
 
 -- spustit ostatne
-
+ALTER TABLE `amazon_ads_sp_targeting` ADD `bid` TINYINT(1) NOT NULL DEFAULT '0' AFTER `amazon_ads_sp_targeting_id`;
 
 ALTER TABLE amazon_ads_sp_targeting DROP FOREIGN KEY amazon_ads_sp_targeting_10;
 ALTER TABLE amazon_ads_sp_targeting DROP FOREIGN KEY amazon_ads_sp_targeting_11;

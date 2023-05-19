@@ -43,7 +43,7 @@ class AmazonManager
     public function basicTemplateSetings(string|null $profileId, bool $remember = false)
     {
         $amazonAdsProfileTable = new AmazonAdsProfileTable();
-        $profiles = $amazonAdsProfileTable->getPair([Table::USER_ID => $this->controller->userId]);
+        $profiles = $amazonAdsProfileTable->getPair([Table::USER_ID => $this->controller->userId],null,'DESC');
 
         // pridenie ostatnych mozosti výberu polapožiadavky
         if(get_class($this->controller) === AmazonMonthlySalesController::NAME)

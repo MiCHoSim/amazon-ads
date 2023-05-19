@@ -48,12 +48,15 @@ abstract class Table
         $this->setArrayData();
     }
 
+
     /**
      ** Načita data z DB
-     * @param string $id
+     * @param array|null $where Podmienka Where
+     * @param array|null $keys Kluče
+     * @param string $orderBy zoradenie prieme siatočné
      * @return mixed
      */
-    public function get(array|null $where = null, array|null $keys = null): mixed
+    public function get(array|null $where = null, array|null $keys = null, string $orderBy = 'ASC'): mixed
     {
         $filterKeys = $keys;
         if(empty($keys))
@@ -76,17 +79,19 @@ abstract class Table
         }
 
        return Db::queryAllRows('SELECT ' . implode(', ', $keys) .
-            ' FROM ' . $this->table . $whereQuery . ' ORDER BY ' . $this->id, $whereValues);
+            ' FROM ' . $this->table . $whereQuery . ' ORDER BY ' . $this->id . ' ' . $orderBy, $whereValues);
     }
 
     /**
      ** Vráti páry pre zobrazenie v Select form
-     * @param string $id
-     * @return array|false
+     * @param array|null $where Podmienka Where
+     * @param array|null $keys Kluče
+     * @param string $orderBy zoradenie prieme siatočné
+     * @return mixed
      */
-    public function getPair(array|null $where = null, array|null $keys = null): array|false
+    public function getPair(array|null $where = null, array|null $keys = null, string $orderBy = 'ASC'): array|false
     {
-        return ArrayUtilities::getPairs($this->get($where, $keys),$this->getPairKeyKey, $this->getPairKeyValue);
+        return ArrayUtilities::getPairs($this->get($where, $keys, $orderBy),$this->getPairKeyKey, $this->getPairKeyValue);
     }
 
 

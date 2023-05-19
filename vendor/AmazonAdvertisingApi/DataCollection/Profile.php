@@ -3,6 +3,7 @@ namespace AmazonAdvertisingApi\DataCollection;
 
 use AmazonAdvertisingApi\Connection\Connection;
 use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
+use App\ApplicationModul\Amazon\Controller\AmazonAdsController;
 use App\ApplicationModul\AppManagement\Controller\AppManagementController;
 use Micho\Utilities\StringUtilities;
 use Exception;
@@ -29,9 +30,11 @@ class Profile extends Request
         $profiles = $this->list();
 
         $profilesData = $this->setTableData($profiles);
-        $profilesData[] = $profilesData[8];
 
-        // Odstranenie vendora z poli ak tam je
+        if(isset($profilesData[8])) // Dorobenie kvoli tomu ze dakedy neprislo pod indexom 8 nic -.. aj ekd enviem repoco to tu bolo toto priradenie
+            $profilesData[] = $profilesData[8];
+
+        // Odstranenie vendora z poli ak tam je tada rpedajcu z dovodu ze martina tam bola ako ako nakupujuca aj ako predavajuca
         foreach ($profilesData as $key => $profile)
         {
             if ($profile[AmazonAdsProfileTable::ACCOUNT_INFO_ARRAY_TYPE] === 'vendor')
@@ -39,10 +42,4 @@ class Profile extends Request
         }
         return $profilesData;
     }
-
-
-
-
-
-
 }

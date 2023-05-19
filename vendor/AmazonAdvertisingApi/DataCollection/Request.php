@@ -109,6 +109,7 @@ abstract class Request
      */
     protected function setTableData(array $requestData) : array
     {
+        $data = array();
         // preloži nazvy amazonu na nazvy premenných v databáze
         if($requestData[Connection::SUCCESS])
         {
@@ -166,9 +167,13 @@ abstract class Request
             }
         }
         else
-            throw new Exception('Error occured. Code: ' . $requestData[Connection::CODE] . ' - ' .
-                ReportDictionary::ERROR_CODES[$requestData[Connection::CODE]]['status'] . ' - ' .
-                ReportDictionary::ERROR_CODES[$requestData[Connection::CODE]]['notes']);
+        {
+            if(!$requestData[Connection::CODE] === '401') // urobenie z dovodu ze bola poziadavka na profile ID ktore už neexistuje,takze encham ench to prejde bez chyby a načita teda veci pre ostatné profili a tento sa preskoci
+                throw new Exception('Error occured. Code: ' . $requestData[Connection::CODE] . ' - ' .
+                    ReportDictionary::ERROR_CODES[$requestData[Connection::CODE]]['status'] . ' - ' .
+                    ReportDictionary::ERROR_CODES[$requestData[Connection::CODE]]['notes']);
+        }
+
         return $data;
     }
 

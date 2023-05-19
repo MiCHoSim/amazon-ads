@@ -175,9 +175,9 @@ class AppManagementController extends Controller
         try
         {
             $profiles = $connection->profile()->prepareData();
+
             $profiles = $amazonAdsProfileTable->sortByCustomer($profiles);
             $amazonAdsProfileTable->save($profiles);
-
             $this->addMessage('Profiles have been saved in the Database',self::MSG_SUCCESS);
         }
         catch (PDOException $error)
@@ -207,11 +207,13 @@ class AppManagementController extends Controller
         {
             $portfolios = $connection->portfolio()->prepareData();
             $amazonAdsPortfolioTable->save($portfolios);
-
             $this->addMessage('Portfolios have been saved in the Database',self::MSG_SUCCESS);
         }
         catch (Exception $error)
         {
+            echo $error->getMessage();
+            die;
+
             $this->addMessage($error->getMessage(),self::MSG_ERROR);
         }
         catch (PDOException $error)

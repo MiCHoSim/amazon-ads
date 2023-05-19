@@ -98,7 +98,7 @@ class AmazonAdsProfileTable extends Table
     // požiadavky ktoré che zákaznik kombinovať
     const COMBINE_PROFILE = ['UK' => 'uk','EU' => 'eu', 'UK+EU' => 'uk+eu'];
     const FULL_COMBINE_PROFILE = ['UK' => ['UK'], 'EU' => ['DE','FR','ES','IT','NL','SE','PL'], 'UK+EU' => ['UK','DE','FR','ES','IT','NL','SE','PL']];
-    const CUSTOM_SORT = ['UK','DE','FR','ES','IT','NL','SE','PL'];
+    const CUSTOM_SORT = ['PL','SE','NL','IT','ES','FR','DE','UK'];
 
     /**
      ** Vrýti combine profile const bez UK
@@ -123,9 +123,19 @@ class AmazonAdsProfileTable extends Table
         foreach ($profiles as $profile)
         {
             $key = array_search($profile[self::COUNTRY_CODE], $customerRequest);
-            $customerRequest[$key] = $profile;
+
+            if($key === false) // ak pride country ktora nieje v zozname zoradenia tak sa prida za koniec zoznamu
+                $customerRequest[] = $profile;
+            else
+                $customerRequest[$key] = $profile;
         }
-        AppManagementController::view($customerRequest);
+        foreach ($customerRequest as $key => $countryData) // odstanenie krajiny kotu je v zozname zoradenie ale nepride z maazonu asi sa uz odstranila
+        {
+            if(!is_array($countryData))
+                unset($customerRequest[$key]);
+        }
+
+       //AppManagementController::view($customerRequest);
 
        return $customerRequest;
     }

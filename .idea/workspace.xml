@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="247653f2-8691-4b80-9ee9-65f84df7180d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="247653f2-8691-4b80-9ee9-65f84df7180d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,6 +31,10 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/xampp/htdocs/amazon",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   },
@@ -74,7 +79,8 @@
       <workItem from="1681212487716" duration="618000" />
       <workItem from="1681217811186" duration="70872000" />
       <workItem from="1683122769831" duration="743000" />
-      <workItem from="1683142821823" duration="45837000" />
+      <workItem from="1683142821823" duration="51007000" />
+      <workItem from="1684491807309" duration="6598000" />
     </task>
     <task id="LOCAL-00001" summary="pridanie nacitavania pre mothkyl sales  vsetky krajiny">
       <created>1681488968701</created>
@@ -160,7 +166,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683269296279</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="cele prerovene uz funkcne sa tim ze som presunul stahovanie biudou naspet uz k pozeraniu">
+      <created>1683278774377</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1683278774377</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,7 +190,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="master" />
+                        <option value="HEAD" />
                       </list>
                     </value>
                   </entry>
@@ -205,6 +218,7 @@
     <MESSAGE value="Dorobenie vymarovania reportov, pricom sa automaticky vymazuju aj bidi" />
     <MESSAGE value="Uprava instrukcii" />
     <MESSAGE value="zakomentovanie transformacie" />
-    <option name="LAST_COMMIT_MESSAGE" value="zakomentovanie transformacie" />
+    <MESSAGE value="cele prerovene uz funkcne sa tim ze som presunul stahovanie biudou naspet uz k pozeraniu" />
+    <option name="LAST_COMMIT_MESSAGE" value="cele prerovene uz funkcne sa tim ze som presunul stahovanie biudou naspet uz k pozeraniu" />
   </component>
 </project>
