@@ -168,7 +168,7 @@ abstract class Request
         }
         else
         {
-            if(!$requestData[Connection::CODE] === '401') // urobenie z dovodu ze bola poziadavka na profile ID ktore už neexistuje,takze encham ench to prejde bez chyby a načita teda veci pre ostatné profili a tento sa preskoci
+            if($requestData[Connection::CODE] != 401) // urobenie z dovodu ze bola poziadavka na profile ID ktore už neexistuje,takze encham ench to prejde bez chyby a načita teda veci pre ostatné profili a tento sa preskoci
                 throw new Exception('Error occured. Code: ' . $requestData[Connection::CODE] . ' - ' .
                     ReportDictionary::ERROR_CODES[$requestData[Connection::CODE]]['status'] . ' - ' .
                     ReportDictionary::ERROR_CODES[$requestData[Connection::CODE]]['notes']);

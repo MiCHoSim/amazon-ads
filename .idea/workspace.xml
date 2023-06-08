@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="247653f2-8691-4b80-9ee9-65f84df7180d" name="Changes" comment="" />
+    <list default="true" id="247653f2-8691-4b80-9ee9-65f84df7180d" name="Changes" comment="Uprava chyby chybyjucej country v profiloch">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ApplicationModul/Amazon/Controller/AmazonMonthlySalesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/ApplicationModul/Amazon/Controller/AmazonMonthlySalesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ApplicationModul/Amazon/Model/AmazonMonthlySalesTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/ApplicationModul/Amazon/Model/AmazonMonthlySalesTable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/AmazonAdvertisingApi/DataCollection/Request.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/AmazonAdvertisingApi/DataCollection/Request.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/AmazonAdvertisingApi/Report/Report.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/AmazonAdvertisingApi/Report/Report.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,33 +25,34 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\xampp\php\php.exe" />
   <component name="ProjectId" id="2MpUzFYhXYOu4cIPfp5xaHw0BXi" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/xampp/htdocs/amazon",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/amazon&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\amazon" />
@@ -81,6 +88,10 @@
       <workItem from="1683122769831" duration="743000" />
       <workItem from="1683142821823" duration="51007000" />
       <workItem from="1684491807309" duration="6598000" />
+      <workItem from="1684509410344" duration="947000" />
+      <workItem from="1684574794851" duration="24025000" />
+      <workItem from="1685612482150" duration="1140000" />
+      <workItem from="1686253499666" duration="1001000" />
     </task>
     <task id="LOCAL-00001" summary="pridanie nacitavania pre mothkyl sales  vsetky krajiny">
       <created>1681488968701</created>
@@ -173,7 +184,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683278774377</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Uprava chyby chybyjucej country v profiloch">
+      <created>1684509526634</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1684509526634</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,7 +208,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="HEAD" />
+                        <option value="master" />
                       </list>
                     </value>
                   </entry>
@@ -219,6 +237,7 @@
     <MESSAGE value="Uprava instrukcii" />
     <MESSAGE value="zakomentovanie transformacie" />
     <MESSAGE value="cele prerovene uz funkcne sa tim ze som presunul stahovanie biudou naspet uz k pozeraniu" />
-    <option name="LAST_COMMIT_MESSAGE" value="cele prerovene uz funkcne sa tim ze som presunul stahovanie biudou naspet uz k pozeraniu" />
+    <MESSAGE value="Uprava chyby chybyjucej country v profiloch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Uprava chyby chybyjucej country v profiloch" />
   </component>
 </project>

@@ -313,7 +313,7 @@ class AmazonMonthlySalesTable extends Table
 
         $whereQueryTotal = ' WHERE ' . $whereOtherKeys . $whereDateKeysTotal;
         $allTotalData = Db::queryOneRow($selectQueryTotals . $fromQuery . $joinQuery . $whereQueryTotal , $whereValuesTotal);
-
+//echo $selectQuery . $fromQuery . $joinQuery . $whereQuery . $groupBy . $orderQuery;die;
         return ['tableHeader'=> array_keys(self::DICTIONARY), 'monthData' => $monthData, 'allTotalData' => $allTotalData];
     }
 

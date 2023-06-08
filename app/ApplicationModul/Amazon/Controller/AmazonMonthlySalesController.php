@@ -3,6 +3,7 @@
 namespace App\ApplicationModul\Amazon\Controller;
 
 use AmazonAdvertisingApi\Connection\Connection;
+use AmazonAdvertisingApi\Currency\Currency;
 use AmazonAdvertisingApi\DataCollection\Profile;
 use AmazonAdvertisingApi\Table\AmazonAdsPortfolioTable;
 use AmazonAdvertisingApi\Table\AmazonAdsProfileTable;
@@ -68,6 +69,18 @@ class AmazonMonthlySalesController extends Controller
      */
     public function download(string|null $reportsIdUrl = null)
     {
+
+        /*
+        $currency = new Currency();
+        $currencyDataEUR = $currency->prepareData('EUR',Currency::ABBREVIATIONS_CURRENCY);
+        $currencyDataGBP = $currency->prepareData('GBP',['GB' => 'EUR']);
+
+        $currencyData = array_merge($currencyDataEUR,$currencyDataGBP);
+
+        AmazonAdsController::view($currencyData);
+*/
+
+        echo "<hr>";
         // nastavenia pre tlacidla
         if (!empty($reportsIdUrl)) // je zadaný report Id tak
         {
@@ -75,10 +88,11 @@ class AmazonMonthlySalesController extends Controller
             $disabledDownload = true;
             try
             {
+
                 $completed = $this->connection->report()->checkAllReports($reportsIdUrl);
             }
             catch (Exception $error)
-            {
+            {die;
                 $this->addMessage($error->getMessage(),self::MSG_ERROR);
                 $this->redirect('amazon-monthly-sales/download');
             }
@@ -166,6 +180,7 @@ class AmazonMonthlySalesController extends Controller
         try
         {
             $this->connection->report()->saveAllReports($reportsIdUrl);
+
             $this->addMessage('All reports data have been saved in the Database',self::MSG_SUCCESS);
             // presmeruje na vypracovanie tých mesačných predajov
             $this->redirect('amazon-monthly-sales/create-monthly-sales');
@@ -197,6 +212,7 @@ class AmazonMonthlySalesController extends Controller
     public function createMonthlySales()
     {
         $xlsxData = isset($_SESSION['xlsxData']) ? $_SESSION['xlsxData'] : false;
+
         if($xlsxData)
         {
             $amazonMonthlySalesManager = new AmazonMonthlySalesManager();

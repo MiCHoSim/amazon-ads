@@ -79,13 +79,14 @@ class Report
     {
         $request = $this->sendRequest($data);
 
-        if($request [Connection::SUCCESS])
+        if($request[Connection::SUCCESS])
         {
-            $data = json_decode($request [Connection::RESPONSE],true);
+            $data = json_decode($request[Connection::RESPONSE],true);
             $this->connection->reportId = $data[Connection::REPORT_ID];
         }
         else
-            throw new Exception('Error occured. Code: ' . $request[Connection::CODE] . ' - ' .
+            if($request[Connection::CODE] != 401) // urobenie z dovodu ze bola poziadavka na profile ID ktore už neexistuje,takze encham ench to prejde bez chyby a načita teda veci pre ostatné profili a tento sa preskoci
+                throw new Exception('Error occured. Code: ' . $request[Connection::CODE] . ' - ' .
                 ReportDictionary::ERROR_CODES[$request[Connection::CODE]]['status'] . ' - ' .
                 ReportDictionary::ERROR_CODES[$request[Connection::CODE]]['notes']);
     }
@@ -104,7 +105,7 @@ class Report
 
         // pošle žiedosť pre všetky profily
         $amazonAdsProfileTable = new AmazonAdsProfileTable();
-        $profiles = $amazonAdsProfileTable->getPair([Table::USER_ID => $this->connection->amazonAdsConfigTable->getUserId()]);
+        $profiles = $amazonAdsProfileTable->getPair([Table::USER_ID => $this->connection->amazonAdsConfigTable->getUserId()],null,'DESC');
 
         if(!$profiles)
             throw new SettingException('Basic settings are not created');
@@ -167,11 +168,11 @@ class Report
     public function checkAllReports(string $reportsIdUrl) : bool
     {
         $amazonAdsProfileTable = new AmazonAdsProfileTable();
-        $profiles = $amazonAdsProfileTable->getPair([Table::USER_ID => $this->connection->amazonAdsConfigTable->getUserId()]);
+        $profiles = $amazonAdsProfileTable->getPair([Table::USER_ID => $this->connection->amazonAdsConfigTable->getUserId()],null,'DESC');
         $profilesIdReportsId = array_combine($profiles, explode('.', $reportsIdUrl)); //spoji dva pola do ejdneho pricom jedno je ako kluc a dreuje ako hodnota
 
+        $profilesIdReportsId = array_unique($profilesIdReportsId); // vytvorenie kvoli tomu ze uzivatel ma ulozenich viec profilov ale medzicasom sa krajina vymazala tak to blblo a tym padom pridelili dvom idckam rovnaky report id a tym padom nesedle sulad reportid a profilid
         $completed = true;
-
         foreach ($profilesIdReportsId as $profileId => $reportId)
         {
             $this->connection->profileId = $profileId;
@@ -323,12 +324,15 @@ class Report
     public function saveAllReports(string $reportsIdUrl) :void
     {
         $amazonAdsProfileTable = new AmazonAdsProfileTable();
-        $profiles = $amazonAdsProfileTable->getPair([Table::USER_ID => $this->connection->amazonAdsConfigTable->getUserId()]);
+        $profiles = $amazonAdsProfileTable->getPair([Table::USER_ID => $this->connection->amazonAdsConfigTable->getUserId()],null,'DESC');
 
         if(empty($profiles))
             throw new SettingException('Basic settings are not created');
 
         $profilesIdReportsId = array_combine($profiles, explode('.', $reportsIdUrl)); //spoji dva pola do ejdneho pricom jedno je ako kluc a dreuje ako hodnota
+
+        $profilesIdReportsId = array_unique($profilesIdReportsId); // vytvorenie kvoli tomu ze uzivatel ma ulozenich viec profilov ale medzicasom sa krajina vymazala tak to blblo a tym padom pridelili dvom idckam rovnaky report id a tym padom nesedle sulad reportid a profilid
+//print_r($profilesIdReportsId);
 
         foreach ($profilesIdReportsId as $profileId => $reportId)
         {
